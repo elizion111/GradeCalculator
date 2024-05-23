@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grade Calculator</title>
+<title>Comprehensive Academic Tools</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -11,63 +11,62 @@
         margin: 20px;
         padding: 20px;
     }
-    form {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-        display: block;
-        margin-bottom: 10px;
-        color: #333;
-    }
-    input[type="number"],
-    input[type="button"] {
-        width: calc(100% - 22px);
-        padding: 10px;
+    form, h1, h2, h3 {
         margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
     }
-    input[type="button"] {
-        background-color: #5c67f2;
+    label, select, input {
+        margin-top: 5px;
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    button {
+        width: auto;
+        padding: 10px;
         color: white;
-        font-weight: bold;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
     }
-    input[type="button"]:hover {
-        background-color: #4a54e1;
+    button:hover {
+        background-color: #45a049;
     }
-    h1 {
-        color: #333;
-    }
-    h2 {
-        color: #2a2a2a;
+    div {
+        margin-bottom: 15px;
     }
 </style>
 </head>
 <body>
-<h1>Grade Calculator</h1>
+<h1>Comprehensive Academic Tools</h1>
+
+<!-- Grade Calculator Section -->
+<h2>Grade Calculator</h2>
 <form id="gradeForm">
-    <label for="semester1Grade">Semester 1 Coursework Grade:</label>
-    <input type="number" id="semester1Grade" step="0.01"><br>
-
-    <label for="semester1Exam">Semester 1 Exam Grade:</label>
-    <input type="number" id="semester1Exam" step="0.01"><br>
-
-    <label for="semester2Grade">Semester 2 Coursework Grade:</label>
-    <input type="number" id="semester2Grade" step="0.01"><br>
-
-    <label for="desiredCumulative">Desired Cumulative Average:</label>
-    <input type="number" id="desiredCumulative" step="0.01"><br>
-
-    <input type="button" value="Calculate" onclick="calculateNeededExamGrade()">
+    <label>Semester 1 Grade:</label>
+    <input type="number" id="semester1Grade" placeholder="Enter Semester 1 Grade">
+    <label>Semester 1 Exam Grade:</label>
+    <input type="number" id="semester1Exam" placeholder="Enter Semester 1 Exam Grade">
+    <label>Semester 2 Grade:</label>
+    <input type="number" id="semester2Grade" placeholder="Enter Semester 2 Grade">
+    <label>Desired Cumulative Average:</label>
+    <input type="number" id="desiredCumulative" placeholder="Enter Desired Cumulative Average">
+    <button type="button" onclick="calculateNeededExamGrade()">Calculate Needed Exam Grade</button>
+    <h3>Needed Semester 2 Exam Grade: <span id="result">-</span></h3>
 </form>
 
-<h2>Needed Semester 2 Exam Grade: <span id="result">-</span></h2>
+<!-- GPA Calculator Section -->
+<h2>GPA Calculator</h2>
+<form id="gpaForm">
+    <div id="coursesContainer"></div>
+    <button type="button" onclick="addCourse()">Add Another Course</button>
+    <button type="button" onclick="calculateGPA()">Calculate GPA</button>
+    <h3>Unweighted GPA: <span id="unweightedGPA">-</span></h3>
+    <h3>Weighted GPA: <span id="weightedGPA">-</span></h3>
+</form>
 
 <script>
+// JavaScript for Grade Calculator
 function calculateNeededExamGrade() {
     var semester1Grade = parseFloat(document.getElementById('semester1Grade').value);
     var semester1Exam = parseFloat(document.getElementById('semester1Exam').value);
@@ -76,10 +75,78 @@ function calculateNeededExamGrade() {
 
     var semester1Final = 0.8 * semester1Grade + 0.2 * semester1Exam;
     var semester2CourseworkContribution = 0.8 * semester2Grade;
-
     var semester2Exam = (desiredCumulative - (0.5 * (semester1Final + semester2CourseworkContribution))) / 0.1;
 
     document.getElementById('result').textContent = semester2Exam.toFixed(2);
+}
+
+// JavaScript for GPA Calculator
+const gpaValues = {
+    'A+': 4.33, 'A': 4.00, 'A-': 3.67,
+    'B+': 3.33, 'B': 3.00, 'B-': 2.67,
+    'C+': 2.33, 'C': 2.00, 'C-': 1.67,
+    'D': 1.00, 'F': 0.00
+};
+function addCourse() {
+    const container = document.getElementById('coursesContainer');
+    const courseDiv = document.createElement('div');
+    courseDiv.innerHTML = `
+        <select class="schoolYear">
+            <option value="Freshman">Freshman Year</option>
+            <option value="Sophomore">Sophomore Year</option>
+            <option value="Junior">Junior Year</option>
+            <option value="Senior">Senior Year</option>
+        </select>
+        <select class="grade">
+            <option value="A+">A+</option><option value="A">A</option><option value="A-">A-</option>
+            <option value="B+">B+</option><option value="B">B</option><option value="B-">B-</option>
+            <option value="C+">C+</option><option value="C">C</option><option value="C-">C-</option>
+            <option value="D">D</option><option value="F">F</option>
+        </select>
+        <select class="courseType">
+            <option value="regular">Regular</option>
+            <option value="honors">Honors</option>
+            <option value="ap">AP</option>
+        </select>
+        <select class="courseDuration">
+            <option value="1">Full Year</option>
+            <option value="0.5">Half Semester</option>
+        </select><br>
+    `;
+    container.appendChild(courseDiv);
+}
+function calculateGPA() {
+    const grades = document.querySelectorAll('.grade');
+    const courseTypes = document.querySelectorAll('.courseType');
+    const courseDurations = document.querySelectorAll('.courseDuration');
+    const schoolYears = document.querySelectorAll('.schoolYear');
+    let totalPoints = 0, weightedPoints = 0, totalCredits = 0;
+    
+    grades.forEach((grade, index) => {
+        const credit = parseFloat(courseDurations[index].value);
+        const baseGPA = gpaValues[grade.value];
+        const courseType = courseTypes[index].value;
+        
+        let weightedGPA = baseGPA;
+        if (courseType === 'honors' || courseType === 'ap') {
+            weightedGPA += 1.0; // Increase by 1 for weighted GPA
+        }
+        
+        totalPoints += baseGPA * credit;
+        weightedPoints += weightedGPA * credit;
+        totalCredits += credit;
+    });
+    
+    const unweightedGPA = totalPoints / totalCredits;
+    const weightedGPA = weightedPoints / totalCredits;
+    
+    document.getElementById('unweightedGPA').textContent = unweightedGPA.toFixed(2);
+    document.getElementById('weightedGPA').textContent = weightedGPA.toFixed(2);
+}
+
+// Initialize with 7 courses for the GPA calculator
+for (let i = 0; i < 7; i++) {
+    addCourse();
 }
 </script>
 </body>
