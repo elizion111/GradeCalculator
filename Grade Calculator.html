@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 20px;
+        padding: 20px;
+    }
+    form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    input[type="number"],
+    input[type="button"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    input[type="button"] {
+        background-color: #5c67f2;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    input[type="button"]:hover {
+        background-color: #4a54e1;
+    }
+    h1 {
+        color: #333;
+    }
+    h2 {
+        color: #2a2a2a;
+    }
+</style>
+</head>
+<body>
+<h1>Grade Calculator</h1>
+<form id="gradeForm">
+    <label for="semester1Grade">Semester 1 Coursework Grade:</label>
+    <input type="number" id="semester1Grade" step="0.01"><br>
+
+    <label for="semester1Exam">Semester 1 Exam Grade:</label>
+    <input type="number" id="semester1Exam" step="0.01"><br>
+
+    <label for="semester2Grade">Semester 2 Coursework Grade:</label>
+    <input type="number" id="semester2Grade" step="0.01"><br>
+
+    <label for="desiredCumulative">Desired Cumulative Average:</label>
+    <input type="number" id="desiredCumulative" step="0.01"><br>
+
+    <input type="button" value="Calculate" onclick="calculateNeededExamGrade()">
+</form>
+
+<h2>Needed Semester 2 Exam Grade: <span id="result">-</span></h2>
+
+<script>
+function calculateNeededExamGrade() {
+    var semester1Grade = parseFloat(document.getElementById('semester1Grade').value);
+    var semester1Exam = parseFloat(document.getElementById('semester1Exam').value);
+    var semester2Grade = parseFloat(document.getElementById('semester2Grade').value);
+    var desiredCumulative = parseFloat(document.getElementById('desiredCumulative').value);
+
+    var semester1Final = 0.8 * semester1Grade + 0.2 * semester1Exam;
+    var semester2CourseworkContribution = 0.8 * semester2Grade;
+
+    var semester2Exam = (desiredCumulative - (0.5 * (semester1Final + semester2CourseworkContribution))) / 0.1;
+
+    document.getElementById('result').textContent = semester2Exam.toFixed(2);
+}
+</script>
+</body>
+</html>
