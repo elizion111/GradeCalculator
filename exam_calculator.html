@@ -27,9 +27,7 @@
             padding: 20px;
         }
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: relative;
             margin-bottom: 20px;
             padding-top: 20px;
         }
@@ -37,8 +35,12 @@
             font-size: 2.5em;
             font-weight: 600;
             color: #ffffff;
+            text-align: center;
         }
-        .back-button, .info-button {
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             background: none;
             border: none;
             color: #ffffff;
@@ -46,38 +48,13 @@
             cursor: pointer;
             padding: 10px;
         }
-        .back-button:hover, .info-button:hover {
+        .back-button:hover {
             color: #a0a0a0;
-        }
-        .tooltip {
-            position: relative;
-        }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 300px;
-            background-color: #2e2e2e;
-            color: #f0f0f0;
-            text-align: left;
-            padding: 15px;
-            border-radius: 8px;
-            position: absolute;
-            z-index: 1;
-            top: 110%;
-            right: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.9em;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
         }
         form {
             background-color: #2e2e2e;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             margin-top: 20px;
         }
         label {
@@ -106,6 +83,7 @@
             color: #fff;
             cursor: pointer;
             transition: background-color 0.2s;
+            font-family: 'Inter', sans-serif;
         }
         button:hover {
             background-color: #005bb5;
@@ -114,27 +92,11 @@
             margin-top: 30px;
             font-size: 1.2em;
             font-weight: 500;
-            text-align: center;
             color: #f0f0f0;
         }
-        /* Custom percentage checkbox */
-        .custom-percentage {
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-        }
-        .custom-percentage input {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-        }
-        /* Subsection for custom weights */
-        .custom-weights {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #3a3a3a;
-            border-radius: 8px;
+        #result .highlight {
+            color: #ffeb3b;
+            font-weight: 600;
         }
         /* Responsive adjustments */
         @media (max-width: 600px) {
@@ -145,7 +107,7 @@
                 font-size: 1em;
                 padding: 12px;
             }
-            .back-button, .info-button {
+            .back-button {
                 font-size: 1.2em;
             }
         }
@@ -156,16 +118,9 @@
         <header>
             <button class="back-button" onclick="window.location.href='index.html'">&larr;</button>
             <h1>Exam Calculator</h1>
-            <div class="tooltip">
-                <button class="info-button">❓</button>
-                <div class="tooltiptext">
-                    <!-- Tooltip content here -->
-                    Calculate the exam score you need to achieve your desired grade.
-                </div>
-            </div>
         </header>
         <form id="examForm">
-            <label for="calculationType">Calculation Type:</label>
+            <label for="calculationType">Select Calculation Type:</label>
             <select id="calculationType">
                 <option value="">Select an option</option>
                 <option value="firstSemester">1st Semester</option>
@@ -178,25 +133,6 @@
 
                 <label for="desiredGrade">Desired Semester Grade (%):</label>
                 <input type="number" id="desiredGrade" min="0" max="100">
-
-                <div class="custom-percentage">
-                    <input type="checkbox" id="customPercentageSem1">
-                    <label for="customPercentageSem1">Split Exam into Two Parts</label>
-                </div>
-
-                <div class="custom-weights" id="customWeightsSem1">
-                    <label for="part1WeightSem1">Part 1 Weight (% of Exam):</label>
-                    <input type="number" id="part1WeightSem1" min="0" max="100" value="50">
-
-                    <label for="part1ScoreSem1">Part 1 Expected Score (%):</label>
-                    <input type="number" id="part1ScoreSem1" min="0" max="100">
-
-                    <label for="part2WeightSem1">Part 2 Weight (% of Exam):</label>
-                    <input type="number" id="part2WeightSem1" min="0" max="100" value="50">
-
-                    <label for="part2ScoreSem1">Part 2 Expected Score (%):</label>
-                    <input type="number" id="part2ScoreSem1" min="0" max="100">
-                </div>
             </div>
 
             <div id="fullYearFields" style="display: none;">
@@ -211,25 +147,6 @@
 
                 <label for="desiredYearGrade">Desired Year Grade (%):</label>
                 <input type="number" id="desiredYearGrade" min="0" max="100">
-
-                <div class="custom-percentage">
-                    <input type="checkbox" id="customPercentageSem2">
-                    <label for="customPercentageSem2">Split Exam into Two Parts</label>
-                </div>
-
-                <div class="custom-weights" id="customWeightsSem2">
-                    <label for="part1WeightSem2">Part 1 Weight (% of Exam):</label>
-                    <input type="number" id="part1WeightSem2" min="0" max="100" value="50">
-
-                    <label for="part1ScoreSem2">Part 1 Expected Score (%):</label>
-                    <input type="number" id="part1ScoreSem2" min="0" max="100">
-
-                    <label for="part2WeightSem2">Part 2 Weight (% of Exam):</label>
-                    <input type="number" id="part2WeightSem2" min="0" max="100" value="50">
-
-                    <label for="part2ScoreSem2">Part 2 Expected Score (%):</label>
-                    <input type="number" id="part2ScoreSem2" min="0" max="100">
-                </div>
             </div>
 
             <button type="button" onclick="calculate()">Calculate</button>
@@ -240,10 +157,6 @@
         const calculationType = document.getElementById('calculationType');
         const firstSemesterFields = document.getElementById('firstSemesterFields');
         const fullYearFields = document.getElementById('fullYearFields');
-        const customPercentageSem1 = document.getElementById('customPercentageSem1');
-        const customPercentageSem2 = document.getElementById('customPercentageSem2');
-        const customWeightsSem1 = document.getElementById('customWeightsSem1');
-        const customWeightsSem2 = document.getElementById('customWeightsSem2');
 
         calculationType.addEventListener('change', function() {
             firstSemesterFields.style.display = 'none';
@@ -258,14 +171,6 @@
             document.getElementById('result').innerHTML = '';
         });
 
-        customPercentageSem1.addEventListener('change', function() {
-            customWeightsSem1.style.display = this.checked ? 'block' : 'none';
-        });
-
-        customPercentageSem2.addEventListener('change', function() {
-            customWeightsSem2.style.display = this.checked ? 'block' : 'none';
-        });
-
         function calculate() {
             const type = calculationType.value;
             let resultText = '';
@@ -278,32 +183,9 @@
                     return;
                 }
 
-                if (customPercentageSem1.checked) {
-                    const part1Weight = parseFloat(document.getElementById('part1WeightSem1').value) / 100;
-                    const part2Weight = parseFloat(document.getElementById('part2WeightSem1').value) / 100;
-                    const part1Score = parseFloat(document.getElementById('part1ScoreSem1').value);
-                    const part2Score = parseFloat(document.getElementById('part2ScoreSem1').value);
+                const requiredExamGrade = (desiredGrade - 0.8 * sem1Grade) / 0.2;
 
-                    if (part1Weight + part2Weight !== 1) {
-                        alert('Part weights must add up to 100%.');
-                        return;
-                    }
-
-                    if (isNaN(part1Score) || isNaN(part2Score)) {
-                        alert('Please enter valid scores for exam parts.');
-                        return;
-                    }
-
-                    const examWeightedScore = part1Score * part1Weight + part2Score * part2Weight;
-                    const requiredExamGrade = (desiredGrade - 0.8 * sem1Grade) / 0.2;
-
-                    resultText = `Your combined exam score is ${examWeightedScore.toFixed(2)}%. You needed ${requiredExamGrade.toFixed(2)}% to achieve your desired grade.`;
-
-                } else {
-                    const requiredExamGrade = (desiredGrade - 0.8 * sem1Grade) / 0.2;
-
-                    resultText = `You need to score ${requiredExamGrade.toFixed(2)}% on the exam to achieve your desired grade.`;
-                }
+                resultText = `You need to score <span class="highlight">${requiredExamGrade.toFixed(2)}%</span> on the exam to achieve your desired grade.`;
 
             } else if (type === 'fullYear') {
                 const sem1Grade = parseFloat(document.getElementById('sem1GradeFull').value);
@@ -316,35 +198,10 @@
                     return;
                 }
 
-                if (customPercentageSem2.checked) {
-                    const part1Weight = parseFloat(document.getElementById('part1WeightSem2').value) / 100;
-                    const part2Weight = parseFloat(document.getElementById('part2WeightSem2').value) / 100;
-                    const part1Score = parseFloat(document.getElementById('part1ScoreSem2').value);
-                    const part2Score = parseFloat(document.getElementById('part2ScoreSem2').value);
+                const sem1Total = 0.8 * sem1Grade + 0.2 * sem1Exam;
+                const requiredSem2ExamGrade = (2 * desiredYearGrade - sem1Total - 0.8 * sem2Grade) / 0.2;
 
-                    if (part1Weight + part2Weight !== 1) {
-                        alert('Part weights must add up to 100%.');
-                        return;
-                    }
-
-                    if (isNaN(part1Score) || isNaN(part2Score)) {
-                        alert('Please enter valid scores for exam parts.');
-                        return;
-                    }
-
-                    const sem1Total = 0.8 * sem1Grade + 0.2 * sem1Exam;
-                    const examWeightedScore = part1Score * part1Weight + part2Score * part2Weight;
-                    const sem2Total = 0.8 * sem2Grade + 0.2 * examWeightedScore;
-                    const yearGrade = (sem1Total + sem2Total) / 2;
-
-                    resultText = `Your calculated year grade is ${yearGrade.toFixed(2)}%. Your desired grade was ${desiredYearGrade.toFixed(2)}%.`;
-
-                } else {
-                    const sem1Total = 0.8 * sem1Grade + 0.2 * sem1Exam;
-                    const requiredSem2ExamGrade = (2 * desiredYearGrade - sem1Total - 0.8 * sem2Grade) / 0.2;
-
-                    resultText = `You need to score ${requiredSem2ExamGrade.toFixed(2)}% on the Semester 2 exam to achieve your desired year grade.`;
-                }
+                resultText = `You need to score <span class="highlight">${requiredSem2ExamGrade.toFixed(2)}%</span> on the Semester 2 exam to achieve your desired year grade.`;
 
             } else {
                 resultText = 'Please select a calculation type and fill out all fields.';
