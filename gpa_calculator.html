@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>GPA Calculator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mobile Responsive -->
     <style>
         /* Reset default browser styles */
         * {
@@ -23,7 +24,7 @@
         }
         .container {
             flex: 1;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             margin: auto;
             padding: 20px;
@@ -36,13 +37,12 @@
         header h1 {
             font-size: 2.5em;
             font-weight: 500;
-            margin: 0;
+            margin-top: 60px;
         }
         .back-button {
             position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 20px;
+            left: 20px;
             background: none;
             border: none;
             color: #0071e3;
@@ -55,9 +55,8 @@
         }
         .info-icon {
             position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 20px;
+            right: 20px;
             font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
@@ -69,11 +68,11 @@
         }
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 280px;
+            width: 300px;
             background-color: #fff;
             color: #000;
             text-align: left;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             position: absolute;
             z-index: 1;
@@ -91,13 +90,6 @@
         .tooltip strong {
             display: block;
             margin-bottom: 5px;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-top: 20px;
         }
         .selection-step {
             text-align: center;
@@ -127,17 +119,34 @@
             background-color: #003f80;
             color: #fff;
         }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-size: 1em;
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            font-size: 1em;
-            border: 1px solid #d2d2d7;
+        .year-section {
+            margin-bottom: 20px;
+            border: 2px solid;
             border-radius: 8px;
+            padding: 10px;
+        }
+        .year-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .course-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .course-table th, .course-table td {
+            border: 1px solid #d2d2d7;
+            padding: 8px;
+            text-align: center;
+        }
+        .course-table th {
             background-color: #f5f5f7;
         }
         .add-course-btn, .remove-course-btn, button.calculate-btn {
@@ -151,18 +160,14 @@
             margin-top: 10px;
             transition: background-color 0.2s;
         }
-        .add-course-btn:hover, .remove-course-btn:hover, button.calculate-btn:hover {
+        .add-course-btn:hover, button.calculate-btn:hover {
             background-color: #005bb5;
         }
-        .course-entry {
-            background-color: #f5f5f7;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+        .remove-course-btn {
+            background-color: #e74c3c;
         }
-        .course-number {
-            font-weight: bold;
-            margin-bottom: 5px;
+        .remove-course-btn:hover {
+            background-color: #c0392b;
         }
         #result {
             margin-top: 30px;
@@ -170,19 +175,23 @@
             font-weight: 500;
             text-align: center;
         }
-        .year-header {
-            font-size: 1.2em;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: 500;
-            background-color: #e5e5e7;
-            padding: 10px;
-            border-radius: 8px;
-        }
         .cumulative-gpa {
             font-size: 1.5em;
             font-weight: 600;
             margin-top: 30px;
+        }
+        /* Year colors */
+        .year-freshman {
+            border-color: #2ecc71;
+        }
+        .year-sophomore {
+            border-color: #9b59b6;
+        }
+        .year-junior {
+            border-color: #e67e22;
+        }
+        .year-senior {
+            border-color: #3498db;
         }
         /* Responsive adjustments */
         @media (max-width: 600px) {
@@ -198,71 +207,28 @@
                 padding: 12px;
             }
         }
-        /* Compact course entry styles */
-        .course-entry {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .course-entry .form-group {
-            flex: 1 1 45%;
-            min-width: 150px;
-            margin-right: 10px;
-            margin-bottom: 5px;
-        }
-        .course-entry .checkbox-group {
-            flex: 1 1 30%;
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 5px;
-        }
-        .checkbox-group label {
-            margin-right: 10px;
-            white-space: nowrap;
-        }
-        .remove-course-btn {
-            flex: 1 1 100%;
-            max-width: 100px;
-        }
-        /* Styles for change selection button */
-        .change-selection-btn {
-            position: absolute;
-            top: 50%;
-            right: 50px;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #0071e3;
-            font-size: 1em;
-            cursor: pointer;
-            padding: 10px;
-        }
-        .change-selection-btn:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <button class="back-button" onclick="window.location.href='index.html'">&larr; Back</button>
-            <h1>GPA Calculator</h1>
-            <div class="tooltip">
-                <span class="info-icon">❓</span>
-                <div class="tooltiptext">
-                    <strong>Grading Scale:</strong>
-                    A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
-                    <br><br>
-                    <strong>Single Year vs. Multi-Year:</strong>
-                    <br>Single Year calculates GPA for one academic year.
-                    <br>Multi-Year calculates cumulative GPA over multiple years.
-                    <br><br>
-                    <strong>Weighted vs. Unweighted GPA:</strong>
-                    <br>Unweighted GPA is calculated on a standard 4.0 scale.
-                    <br>Weighted GPA adds extra points for Honors/AP courses.
-                </div>
+        <button class="back-button" onclick="window.location.href='index.html'">&larr; Back</button>
+        <div class="tooltip">
+            <span class="info-icon">❓</span>
+            <div class="tooltiptext">
+                <strong>Grading Scale:</strong>
+                A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
+                <br><br>
+                <strong>Single Year vs. Multi-Year:</strong>
+                <br>Single Year calculates GPA for one academic year.
+                <br>Multi-Year calculates cumulative GPA over multiple years.
+                <br><br>
+                <strong>Weighted vs. Unweighted GPA:</strong>
+                <br>Unweighted GPA is calculated on a standard 4.0 scale.
+                <br>Weighted GPA adds extra points for Honors/AP courses.
             </div>
-            <button class="change-selection-btn" id="changeSelectionBtn" style="display: none;">Change Selection</button>
+        </div>
+        <header>
+            <h1>GPA Calculator</h1>
         </header>
         <div id="initialSelection">
             <div class="selection-step" id="step1">
@@ -322,8 +288,6 @@
 
                 if (this.parentNode.id === 'step1') {
                     calculationTypeValue = this.getAttribute('data-value');
-                    step1.style.transform = 'scale(0.8)';
-                    step1.style.opacity = '0.6';
                     if (calculationTypeValue === 'multiYear') {
                         step2.style.display = 'block';
                     } else {
@@ -334,8 +298,6 @@
                     }
                 } else if (this.parentNode.id === 'step2') {
                     yearSelectionValue = this.getAttribute('data-value');
-                    step2.style.transform = 'scale(0.8)';
-                    step2.style.opacity = '0.6';
                     initialSelection.style.display = 'none';
                     gpaForm.style.display = 'block';
                     const years = getYearsArray(yearSelectionValue);
@@ -344,27 +306,6 @@
                     });
                     changeSelectionBtn.style.display = 'inline';
                 }
-            });
-        });
-
-        changeSelectionBtn.addEventListener('click', function() {
-            // Reset selections and forms
-            calculationTypeValue = '';
-            yearSelectionValue = '';
-            step1.style.transform = 'scale(1)';
-            step1.style.opacity = '1';
-            step2.style.transform = 'scale(1)';
-            step2.style.opacity = '1';
-            step2.style.display = 'none';
-            initialSelection.style.display = 'block';
-            gpaForm.style.display = 'none';
-            yearSections.innerHTML = '';
-            document.getElementById('result').innerHTML = '';
-            changeSelectionBtn.style.display = 'none';
-
-            // Remove 'selected' class from all options
-            document.querySelectorAll('.selection-option').forEach(option => {
-                option.classList.remove('selected');
             });
         });
 
@@ -384,6 +325,25 @@
         function createYearSection(yearName) {
             const section = document.createElement('div');
             section.className = 'year-section';
+
+            // Apply color class based on year
+            switch (yearName) {
+                case 'Freshman':
+                    section.classList.add('year-freshman');
+                    break;
+                case 'Sophomore':
+                    section.classList.add('year-sophomore');
+                    break;
+                case 'Junior':
+                    section.classList.add('year-junior');
+                    break;
+                case 'Senior':
+                    section.classList.add('year-senior');
+                    break;
+                default:
+                    break;
+            }
+
             section.dataset.year = yearName;
 
             const header = document.createElement('div');
@@ -391,63 +351,56 @@
             header.textContent = yearName;
             section.appendChild(header);
 
-            const courseList = document.createElement('div');
-            courseList.className = 'course-list';
-            section.appendChild(courseList);
+            const courseTable = document.createElement('table');
+            courseTable.className = 'course-table';
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            ['Course Name', 'Grade', 'Honors/AP', 'Single Semester', 'Remove'].forEach(text => {
+                const th = document.createElement('th');
+                th.textContent = text;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            courseTable.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            courseTable.appendChild(tbody);
+
+            section.appendChild(courseTable);
 
             const addCourseBtn = document.createElement('button');
             addCourseBtn.type = 'button';
             addCourseBtn.className = 'add-course-btn';
             addCourseBtn.textContent = '+ Add Course';
             addCourseBtn.addEventListener('click', function() {
-                addCourseEntry(courseList);
+                addCourseEntry(tbody);
             });
             section.appendChild(addCourseBtn);
 
             // Add the first course entry by default
-            addCourseEntry(courseList);
+            addCourseEntry(tbody);
 
             yearSections.appendChild(section);
         }
 
-        function addCourseEntry(courseList) {
-            if (courseList.children.length >= maxCourses) {
+        function addCourseEntry(tbody) {
+            if (tbody.children.length >= maxCourses) {
                 alert('Maximum number of courses reached.');
                 return;
             }
 
-            const courseNumber = courseList.children.length + 1;
-
-            const courseEntry = document.createElement('div');
-            courseEntry.className = 'course-entry';
-
-            const courseNumberLabel = document.createElement('div');
-            courseNumberLabel.className = 'course-number';
-            courseNumberLabel.textContent = `Course ${courseNumber}`;
-            courseEntry.appendChild(courseNumberLabel);
+            const tr = document.createElement('tr');
 
             // Course Name
-            const formGroup1 = document.createElement('div');
-            formGroup1.className = 'form-group';
-
-            const courseNameLabel = document.createElement('label');
-            courseNameLabel.textContent = 'Course Name:';
-            formGroup1.appendChild(courseNameLabel);
-
+            const tdCourseName = document.createElement('td');
             const courseNameInput = document.createElement('input');
             courseNameInput.type = 'text';
-            formGroup1.appendChild(courseNameInput);
-
-            courseEntry.appendChild(formGroup1);
+            courseNameInput.style.width = '100%';
+            tdCourseName.appendChild(courseNameInput);
+            tr.appendChild(tdCourseName);
 
             // Grade
-            const formGroup2 = document.createElement('div');
-            formGroup2.className = 'form-group';
-
-            const gradeLabel = document.createElement('label');
-            gradeLabel.textContent = 'Grade:';
-            formGroup2.appendChild(gradeLabel);
-
+            const tdGrade = document.createElement('td');
             const gradeSelect = document.createElement('select');
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
@@ -459,50 +412,36 @@
                 option.textContent = grade;
                 gradeSelect.appendChild(option);
             });
-            formGroup2.appendChild(gradeSelect);
+            tdGrade.appendChild(gradeSelect);
+            tr.appendChild(tdGrade);
 
-            courseEntry.appendChild(formGroup2);
-
-            // Checkboxes
-            const checkboxGroup = document.createElement('div');
-            checkboxGroup.className = 'checkbox-group';
-
-            const honorsLabel = document.createElement('label');
+            // Honors/AP
+            const tdHonors = document.createElement('td');
             const honorsCheckbox = document.createElement('input');
             honorsCheckbox.type = 'checkbox';
-            honorsLabel.appendChild(honorsCheckbox);
-            honorsLabel.appendChild(document.createTextNode(' Honors/AP'));
-            checkboxGroup.appendChild(honorsLabel);
+            tdHonors.appendChild(honorsCheckbox);
+            tr.appendChild(tdHonors);
 
-            const semesterLabel = document.createElement('label');
+            // Single Semester
+            const tdSemester = document.createElement('td');
             const semesterCheckbox = document.createElement('input');
             semesterCheckbox.type = 'checkbox';
-            semesterLabel.appendChild(semesterCheckbox);
-            semesterLabel.appendChild(document.createTextNode(' Single Semester'));
-            checkboxGroup.appendChild(semesterLabel);
-
-            courseEntry.appendChild(checkboxGroup);
+            tdSemester.appendChild(semesterCheckbox);
+            tr.appendChild(tdSemester);
 
             // Remove Button
+            const tdRemove = document.createElement('td');
             const removeCourseBtn = document.createElement('button');
             removeCourseBtn.type = 'button';
             removeCourseBtn.className = 'remove-course-btn';
             removeCourseBtn.textContent = 'Remove';
             removeCourseBtn.addEventListener('click', function() {
-                courseList.removeChild(courseEntry);
-                updateCourseNumbers(courseList);
+                tbody.removeChild(tr);
             });
-            courseEntry.appendChild(removeCourseBtn);
+            tdRemove.appendChild(removeCourseBtn);
+            tr.appendChild(tdRemove);
 
-            courseList.appendChild(courseEntry);
-        }
-
-        function updateCourseNumbers(courseList) {
-            const courseEntries = Array.from(courseList.children);
-            courseEntries.forEach((entry, index) => {
-                const courseNumberLabel = entry.querySelector('.course-number');
-                courseNumberLabel.textContent = `Course ${index + 1}`;
-            });
+            tbody.appendChild(tr);
         }
 
         function calculateGPA() {
@@ -514,17 +453,18 @@
             const yearSectionsArray = Array.from(document.querySelectorAll('.year-section'));
             for (let section of yearSectionsArray) {
                 const yearName = section.dataset.year;
-                const courseEntries = Array.from(section.querySelectorAll('.course-entry'));
+                const tbody = section.querySelector('tbody');
+                const rows = Array.from(tbody.children);
                 let yearUnweightedTotal = 0;
                 let yearWeightedTotal = 0;
                 let yearCredits = 0;
 
-                for (let entry of courseEntries) {
-                    const courseName = entry.querySelector('input[type="text"]').value.trim();
-                    const grade = entry.querySelector('select').value;
-                    const checkboxes = entry.querySelectorAll('input[type="checkbox"]');
-                    const isHonors = checkboxes[0].checked;
-                    const isSemester = checkboxes[1].checked;
+                for (let row of rows) {
+                    const cells = row.children;
+                    const courseName = cells[0].querySelector('input').value.trim();
+                    const grade = cells[1].querySelector('select').value;
+                    const isHonors = cells[2].querySelector('input').checked;
+                    const isSemester = cells[3].querySelector('input').checked;
 
                     // Skip incomplete courses
                     if (!courseName || !grade) {
@@ -552,8 +492,27 @@
                 totalWeightedPoints += yearWeightedTotal;
                 totalCredits += yearCredits;
 
-                resultText += `<div class="year-header">${yearName} GPA</div>`;
-                resultText += `<small>Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
+                // Apply color style to results
+                let colorStyle = '';
+                switch (yearName) {
+                    case 'Freshman':
+                        colorStyle = 'color: #2ecc71;';
+                        break;
+                    case 'Sophomore':
+                        colorStyle = 'color: #9b59b6;';
+                        break;
+                    case 'Junior':
+                        colorStyle = 'color: #e67e22;';
+                        break;
+                    case 'Senior':
+                        colorStyle = 'color: #3498db;';
+                        break;
+                    default:
+                        break;
+                }
+
+                resultText += `<div class="year-header" style="${colorStyle}">${yearName} GPA</div>`;
+                resultText += `<small style="${colorStyle}">Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
                 resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}</small><br><br>`;
             }
 
