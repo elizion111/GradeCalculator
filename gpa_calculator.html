@@ -1,27 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPA Calculator</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>GPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .year-section {
+            margin-bottom: 40px;
+        }
+        .course-entry {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .course-entry label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .course-entry input[type="text"],
+        .course-entry select {
+            width: calc(100% - 10px);
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .course-entry input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .add-course-btn {
+            display: block;
+            margin: 10px 0 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #calculateBtn {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 25px;
+            font-size: 18px;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .course-list {
+            margin-top: 20px;
+        }
+        .year-header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<nav>
-    <a href="index.html">Home</a>
-    <a href="grade_calculator.html">Grade Calculator</a>
-</nav>
-<h2>GPA Calculator</h2>
-<form id="gpaForm">
-    <div id="coursesContainer"></div>
-    <button type="button" onclick="addCourse()">Add Another Course</button>
-    <button type="button" onclick="calculateGPA()">Calculate GPA</button>
-    <h3>Unweighted GPA: <span id="unweightedGPA">-</span></h3>
-    <h3>Weighted GPA: <span id="weightedGPA">-</span></h3>
-</form>
-<script>
-// JavaScript for GPA Calculator
-// Add the previously defined JavaScript for managing courses and calculating GPA
-</script>
+    <h1>GPA Calculator</h1>
+    <form id="gpaForm">
+        <label for="calculationType">Calculation Type:</label>
+        <select id="calculationType" required>
+            <option value="">Select an option</option>
+            <option value="singleYear">Single Year</option>
+            <option value="multiYear">Multi-Year</option>
+        </select>
+
+        <div id="multiYearOptions" style="display: none;">
+            <label for="yearSelection">Select Years:</label>
+            <select id="yearSelection" required>
+                <option value="">Select an option</option>
+                <option value="sophomore">Sophomore (2 years)</option>
+                <option value="junior">Junior (3 years)</option>
+                <option value="senior">Senior (4 years)</option>
+            </select>
+        </div>
+
+        <div id="yearSections">
+            <!-- Year sections will be injected here -->
+        </div>
+
+        <button type="button" id="calculateBtn" onclick="calculateGPA()">Calculate GPA</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const calculationType = document.getElementById('calculationType');
+        const multiYearOptions = document.getElementById('multiYearOptions');
+        const yearSelection = document.getElementById('yearSelection');
+        const yearSections = document.getElementById('yearSections');
+        const maxCourses = 11;
+
+        const gradeScale = {
+            'A+': 4.33,
+            'A': 4.00,
+            'A-': 3.67,
+            'B+': 3.33,
+            'B': 3.00,
+            'B-': 2.67,
+            'C+': 2.33,
+            'C': 2.00,
+            'C-': 1.67,
+            'D': 1.00,
+            'F': 0.00
+        };
+
+        calculationType.addEventListener('change', function() {
+            yearSections.innerHTML = '';
+            if (this.value === 'singleYear') {
+                multiYearOptions.style.display = 'none';
+                createYearSection('Single Year');
+            } else if (this.value === 'multiYear') {
+                multiYearOptions.style.display = 'block';
+            } else {
+                multiYearOptions.style.display = 'none';
+            }
+            document.getElementById('result').innerHTML = '';
+        });
+
+        yearSelection.addEventListener('change', function() {
+            yearSections.innerHTML = '';
+            const years = getYearsArray(this.value);
+            years.forEach(year => {
+                createYearSection(year);
+            });
+            document.getElementById('result').innerHTML = '';
+        });
+
+        function getYearsArray(selection) {
+            switch (selection) {
+                case 'sophomore':
+                    return ['Freshman', 'Sophomore'];
+                case 'junior':
+                    return ['Freshman', 'Sophomore', 'Junior'];
+                case 'senior':
+                    return ['Freshman', 'Sophomore', 'Junior', 'Senior'];
+                default:
+                    return [];
+            }
+        }
+
+        function createYearSection(yearName) {
+            const section = document.createElement('div');
+            section.className = 'year-section';
+            section.dataset.year = yearName;
+
+            const header = document.createElement('div');
+            header.className = 'year-header';
+            header.textContent = yearName;
+            section.appendChild(header);
+
+            const courseList = document.createElement('div');
+            courseList.className = 'course-list';
+            section.appendChild(courseList);
+
+            const addCourseBtn = document.createElement('button');
+            addCourseBtn.type = 'button';
+            addCourseBtn.className = 'add-course-btn';
+            addCourseBtn.textContent = '+ Add Course';
+            addCourseBtn.addEventListener('click', function() {
+                addCourseEntry(courseList);
+            });
+            section.appendChild(addCourseBtn);
+
+            // Add the first course entry by default
+            addCourseEntry(courseList);
+
+            yearSections.appendChild(section);
+        }
+
+        function addCourseEntry(courseList) {
+            if (courseList.children.length >= maxCourses) {
+                alert('Maximum number of courses reached.');
+                return;
+            }
+
+            const courseEntry = document.createElement('div');
+            courseEntry.className = 'course-entry';
+
+            const courseNameLabel = document.createElement('label');
+            courseNameLabel.textContent = 'Course Name:';
+            courseEntry.appendChild(courseNameLabel);
+
+            const courseNameInput = document.createElement('input');
+            courseNameInput.type = 'text';
+            courseNameInput.required = true;
+            courseEntry.appendChild(courseNameInput);
+
+            const gradeLabel = document.createElement('label');
+            gradeLabel.textContent = 'Grade:';
+            courseEntry.appendChild(gradeLabel);
+
+            const gradeSelect = document.createElement('select');
+            gradeSelect.required = true;
+            Object.keys(gradeScale).forEach(grade => {
+                const option = document.createElement('option');
+                option.value = grade;
+                option.textContent = grade;
+                gradeSelect.appendChild(option);
+            });
+            courseEntry.appendChild(gradeSelect);
+
+            const honorsLabel = document.createElement('label');
+            const honorsCheckbox = document.createElement('input');
+            honorsCheckbox.type = 'checkbox';
+            honorsLabel.appendChild(honorsCheckbox);
+            honorsLabel.appendChild(document.createTextNode(' Honors/AP'));
+            courseEntry.appendChild(honorsLabel);
+
+            const semesterLabel = document.createElement('label');
+            const semesterCheckbox = document.createElement('input');
+            semesterCheckbox.type = 'checkbox';
+            semesterLabel.appendChild(semesterCheckbox);
+            semesterLabel.appendChild(document.createTextNode(' Single Semester'));
+            courseEntry.appendChild(semesterLabel);
+
+            courseList.appendChild(courseEntry);
+        }
+
+        function calculateGPA() {
+            const calculationTypeValue = calculationType.value;
+            if (!calculationTypeValue) {
+                alert('Please select a calculation type.');
+                return;
+            }
+
+            let totalGPA = 0;
+            let totalYears = 0;
+            let resultText = '';
+
+            const yearSectionsArray = Array.from(document.querySelectorAll('.year-section'));
+            yearSectionsArray.forEach(section => {
+                const yearName = section.dataset.year;
+                const courseEntries = Array.from(section.querySelectorAll('.course-entry'));
+                let yearUnweightedTotal = 0;
+                let yearWeightedTotal = 0;
+                let yearCredits = 0;
+
+                courseEntries.forEach(entry => {
+                    const courseName = entry.querySelector('input[type="text"]').value.trim();
+                    const grade = entry.querySelector('select').value;
+                    const isHonors = entry.querySelector('input[type="checkbox"]').checked;
+                    const isSemester = entry.querySelectorAll('input[type="checkbox"]')[1].checked;
+
+                    if (!courseName || !grade) {
+                        alert('Please fill out all course information.');
+                        return;
+                    }
+
+                    let weight = isSemester ? 0.5 : 1.0;
+                    let unweightedGradeValue = gradeScale[grade];
+                    let weightedGradeValue = unweightedGradeValue + (isHonors ? 1.0 : 0.0);
+                    
+                    yearUnweightedTotal += unweightedGradeValue * weight;
+                    yearWeightedTotal += weightedGradeValue * weight;
+                    yearCredits += weight;
+                });
+
+                const yearUnweightedGPA = yearUnweightedTotal / yearCredits;
+                const yearWeightedGPA = yearWeightedTotal / yearCredits;
+
+                totalGPA += yearUnweightedGPA;
+                totalYears++;
+
+                resultText += `<h3>${yearName} GPA</h3>`;
+                resultText += `Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
+                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}<br><br>`;
+            });
+
+            if (calculationTypeValue === 'multiYear') {
+                const cumulativeGPA = totalGPA / totalYears;
+                resultText += `<h2>Cumulative Unweighted GPA: ${(cumulativeGPA).toFixed(3)}</h2>`;
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
 </body>
 </html>
