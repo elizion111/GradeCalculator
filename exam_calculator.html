@@ -14,22 +14,28 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
         body {
-            font-family: 'Inter', sans-serif;
             background-color: #1e1e1e;
             color: #f0f0f0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .container {
             max-width: 600px;
             margin: auto;
             padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         header {
             position: relative;
             margin-bottom: 20px;
-            padding-top: 20px;
+            padding-top: 60px;
         }
         header h1 {
             font-size: 2.5em;
@@ -48,20 +54,19 @@
             font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
-            font-family: 'Inter', sans-serif;
         }
         form {
             background-color: #2e2e2e;
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
             margin: 15px 0 5px;
             font-size: 1em;
             color: #f0f0f0;
-            font-family: 'Inter', sans-serif;
         }
         input[type="number"], select {
             width: 100%;
@@ -71,10 +76,9 @@
             border-radius: 8px;
             background-color: #3a3a3a;
             color: #f0f0f0;
-            font-family: 'Inter', sans-serif;
+            margin-bottom: 10px;
         }
         button {
-            width: 100%;
             margin-top: 20px;
             padding: 15px;
             font-size: 1em;
@@ -84,7 +88,6 @@
             color: #fff;
             cursor: pointer;
             transition: background-color 0.2s;
-            font-family: 'Inter', sans-serif;
         }
         button:hover {
             background-color: #005bb5;
@@ -94,9 +97,10 @@
             font-size: 1.2em;
             font-weight: 500;
             color: #f0f0f0;
+            text-align: center;
         }
         #result .highlight {
-            color: #ffeb3b;
+            color: #0071e3;
             font-weight: 600;
         }
         /* Removed hover effect from back button */
@@ -126,7 +130,7 @@
         </header>
         <form id="examForm">
             <label for="calculationType">Select Calculation Type:</label>
-            <select id="calculationType" style="font-family: 'Inter', sans-serif;">
+            <select id="calculationType">
                 <option value="">Select an option</option>
                 <option value="firstSemester">1st Semester</option>
                 <option value="fullYear">Full Year</option>
