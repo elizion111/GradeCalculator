@@ -34,7 +34,7 @@
         header h1 {
             font-size: 2.5em;
             font-weight: 600;
-            color: #ffffff;
+            color: #f0f0f0;
             text-align: center;
             margin-bottom: 10px;
         }
@@ -43,10 +43,11 @@
             top: 20px;
             background: none;
             border: none;
-            color: #ffffff;
+            color: #f0f0f0;
             font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
+            font-family: 'Inter', sans-serif;
         }
         .back-button {
             left: 20px;
@@ -89,7 +90,7 @@
         .selection-step h2 {
             font-size: 1.5em;
             margin-bottom: 10px;
-            color: #f0f0f0;
+            color: #a0a0a0;
         }
         .selection-option {
             display: inline-block;
@@ -102,6 +103,7 @@
             font-size: 1.2em;
             transition: background-color 0.2s, transform 0.2s;
             border: none;
+            font-family: 'Inter', sans-serif;
         }
         .selection-option:hover {
             background-color: #5a5a5a;
@@ -127,9 +129,8 @@
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #ffffff;
+            color: #f0f0f0;
             padding: 10px;
-            border-radius: 8px;
             text-align: center;
         }
         .course-entry {
@@ -148,11 +149,13 @@
             margin-right: 10px;
             margin-bottom: 10px;
             flex: 1;
+            font-family: 'Inter', sans-serif;
         }
         .course-entry label {
             margin-right: 10px;
             font-size: 1em;
             color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
         }
         .course-entry input[type="checkbox"] {
             width: 18px;
@@ -169,13 +172,14 @@
             cursor: pointer;
             transition: background-color 0.2s;
             margin-left: auto;
+            font-family: 'Inter', sans-serif;
         }
         .remove-course-btn:hover {
             background-color: #c0392b;
         }
         .add-course-btn {
-            background-color: #0071e3;
-            color: #ffffff;
+            background-color: #3a3a3a;
+            color: #f0f0f0;
             border: none;
             padding: 10px 15px;
             font-size: 1em;
@@ -184,10 +188,11 @@
             transition: background-color 0.2s;
             margin-top: 10px;
             display: block;
-            width: 100%;
+            width: auto;
+            font-family: 'Inter', sans-serif;
         }
         .add-course-btn:hover {
-            background-color: #005bb5;
+            background-color: #5a5a5a;
         }
         .calculate-btn {
             background-color: #28a745;
@@ -201,6 +206,7 @@
             margin-top: 20px;
             display: block;
             width: 100%;
+            font-family: 'Inter', sans-serif;
         }
         .calculate-btn:hover {
             background-color: #218838;
@@ -214,9 +220,10 @@
             border-radius: 50px;
             cursor: pointer;
             transition: background-color 0.2s;
-            margin-top: 10px;
+            margin-bottom: 20px;
             display: block;
             width: 100%;
+            font-family: 'Inter', sans-serif;
         }
         .change-selection-btn:hover {
             background-color: #5a6268;
@@ -234,33 +241,28 @@
             color: #ffffff;
             text-align: center;
         }
+        .cumulative-gpa .gpa-value {
+            color: #ffeb3b;
+        }
         .year-result {
             padding: 10px;
             border-radius: 8px;
             margin-bottom: 10px;
-            color: #1e1e1e;
+            background-color: #2e2e2e;
+            color: #f0f0f0;
             text-align: center;
         }
-        /* Year colors */
-        .year-freshman {
-            background-color: #a8dadc;
+        .year-result .gpa-value {
+            color: #a8dadc; /* Pastel color */
         }
-        .year-sophomore {
-            background-color: #f1fa8c;
+        .year-header .year-name {
+            color: #a8dadc; /* Pastel color */
         }
-        .year-junior {
-            background-color: #ffb4a2;
+        /* Adjusted colors */
+        .year-header {
+            color: #f0f0f0;
         }
-        .year-senior {
-            background-color: #bdb2ff;
-        }
-        .year-freshman .year-header,
-        .year-sophomore .year-header,
-        .year-junior .year-header,
-        .year-senior .year-header {
-            background-color: transparent;
-            color: inherit;
-        }
+        /* Remove yellow pastel */
         /* Responsive adjustments */
         @media (max-width: 600px) {
             header h1 {
@@ -399,29 +401,14 @@
             const section = document.createElement('div');
             section.className = 'year-section';
 
-            // Apply pastel color class based on year
-            switch (yearName) {
-                case 'Freshman':
-                    section.classList.add('year-freshman');
-                    break;
-                case 'Sophomore':
-                    section.classList.add('year-sophomore');
-                    break;
-                case 'Junior':
-                    section.classList.add('year-junior');
-                    break;
-                case 'Senior':
-                    section.classList.add('year-senior');
-                    break;
-                default:
-                    break;
-            }
-
             section.dataset.year = yearName;
 
             const header = document.createElement('div');
             header.className = 'year-header';
-            header.textContent = yearName;
+            const yearSpan = document.createElement('span');
+            yearSpan.className = 'year-name';
+            yearSpan.textContent = yearName;
+            header.appendChild(yearSpan);
             section.appendChild(header);
 
             const courseList = document.createElement('div');
@@ -470,6 +457,7 @@
                 option.textContent = grade;
                 gradeSelect.appendChild(option);
             });
+            gradeSelect.style.fontFamily = 'Inter, sans-serif';
             courseEntry.appendChild(gradeSelect);
 
             // Honors/AP
@@ -548,10 +536,10 @@
                 totalWeightedPoints += yearWeightedTotal;
                 totalCredits += yearCredits;
 
-                resultText += `<div class="year-result" style="background-color: ${getYearColor(yearName)};">
+                resultText += `<div class="year-result">
                     <strong>${yearName} GPA</strong><br>
-                    Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>
-                    Weighted GPA: ${yearWeightedGPA.toFixed(3)}
+                    Unweighted GPA: <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
+                    Weighted GPA: <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
                 </div>`;
             }
 
@@ -561,26 +549,11 @@
                 const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
                 const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
 
-                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: ${cumulativeUnweightedGPA.toFixed(3)}</div>`;
-                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: ${cumulativeWeightedGPA.toFixed(3)}</div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
             }
 
             document.getElementById('result').innerHTML = resultText;
-        }
-
-        function getYearColor(yearName) {
-            switch (yearName) {
-                case 'Freshman':
-                    return '#a8dadc';
-                case 'Sophomore':
-                    return '#f1fa8c';
-                case 'Junior':
-                    return '#ffb4a2';
-                case 'Senior':
-                    return '#bdb2ff';
-                default:
-                    return '#ffffff';
-            }
         }
     </script>
 </body>
