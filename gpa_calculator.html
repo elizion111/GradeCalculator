@@ -27,9 +27,7 @@
             padding: 20px;
         }
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: relative;
             margin-bottom: 20px;
             padding-top: 20px;
         }
@@ -37,8 +35,12 @@
             font-size: 2.5em;
             font-weight: 600;
             color: #ffffff;
+            text-align: center;
+            margin-bottom: 10px;
         }
         .back-button, .info-button {
+            position: absolute;
+            top: 20px;
             background: none;
             border: none;
             color: #ffffff;
@@ -46,8 +48,11 @@
             cursor: pointer;
             padding: 10px;
         }
-        .back-button:hover, .info-button:hover {
-            color: #a0a0a0;
+        .back-button {
+            left: 20px;
+        }
+        .info-button {
+            right: 20px;
         }
         .tooltip {
             position: relative;
@@ -110,13 +115,13 @@
             background-color: #2e2e2e;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             margin-top: 20px;
         }
         .year-section {
             margin-bottom: 20px;
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 15px;
+            background-color: #2e2e2e;
         }
         .year-header {
             font-size: 1.5em;
@@ -125,7 +130,7 @@
             color: #ffffff;
             padding: 10px;
             border-radius: 8px;
-            background-color: #3a3a3a;
+            text-align: center;
         }
         .course-entry {
             display: flex;
@@ -168,7 +173,7 @@
         .remove-course-btn:hover {
             background-color: #c0392b;
         }
-        .add-course-btn, .calculate-btn {
+        .add-course-btn {
             background-color: #0071e3;
             color: #ffffff;
             border: none;
@@ -181,14 +186,45 @@
             display: block;
             width: 100%;
         }
-        .add-course-btn:hover, .calculate-btn:hover {
+        .add-course-btn:hover {
             background-color: #005bb5;
+        }
+        .calculate-btn {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        .calculate-btn:hover {
+            background-color: #218838;
+        }
+        .change-selection-btn {
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+        }
+        .change-selection-btn:hover {
+            background-color: #5a6268;
         }
         #result {
             margin-top: 30px;
             font-size: 1.2em;
             font-weight: 500;
-            text-align: center;
             color: #f0f0f0;
         }
         .cumulative-gpa {
@@ -196,19 +232,34 @@
             font-weight: 600;
             margin-top: 30px;
             color: #ffffff;
+            text-align: center;
+        }
+        .year-result {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: #1e1e1e;
+            text-align: center;
         }
         /* Year colors */
-        .year-freshman .year-header {
-            background-color: #3a3a3a;
+        .year-freshman {
+            background-color: #a8dadc;
         }
-        .year-sophomore .year-header {
-            background-color: #3a3a3a;
+        .year-sophomore {
+            background-color: #f1fa8c;
         }
-        .year-junior .year-header {
-            background-color: #3a3a3a;
+        .year-junior {
+            background-color: #ffb4a2;
         }
+        .year-senior {
+            background-color: #bdb2ff;
+        }
+        .year-freshman .year-header,
+        .year-sophomore .year-header,
+        .year-junior .year-header,
         .year-senior .year-header {
-            background-color: #3a3a3a;
+            background-color: transparent;
+            color: inherit;
         }
         /* Responsive adjustments */
         @media (max-width: 600px) {
@@ -219,7 +270,7 @@
                 font-size: 1em;
                 padding: 10px 15px;
             }
-            .add-course-btn, .calculate-btn, .remove-course-btn {
+            .add-course-btn, .calculate-btn, .remove-course-btn, .change-selection-btn {
                 font-size: 0.9em;
             }
             .back-button, .info-button {
@@ -263,11 +314,11 @@
             </div>
         </div>
         <form id="gpaForm" style="display: none;">
+            <button type="button" class="change-selection-btn" id="changeSelectionBtn">Change Selection</button>
             <div id="yearSections">
                 <!-- Year sections will be injected here -->
             </div>
             <button type="button" class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
-            <button type="button" class="calculate-btn" id="changeSelectionBtn">Change Selection</button>
         </form>
         <div id="result"></div>
     </div>
@@ -347,6 +398,24 @@
         function createYearSection(yearName) {
             const section = document.createElement('div');
             section.className = 'year-section';
+
+            // Apply pastel color class based on year
+            switch (yearName) {
+                case 'Freshman':
+                    section.classList.add('year-freshman');
+                    break;
+                case 'Sophomore':
+                    section.classList.add('year-sophomore');
+                    break;
+                case 'Junior':
+                    section.classList.add('year-junior');
+                    break;
+                case 'Senior':
+                    section.classList.add('year-senior');
+                    break;
+                default:
+                    break;
+            }
 
             section.dataset.year = yearName;
 
@@ -479,9 +548,11 @@
                 totalWeightedPoints += yearWeightedTotal;
                 totalCredits += yearCredits;
 
-                resultText += `<div class="year-header">${yearName} GPA</div>`;
-                resultText += `<div>Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
-                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}</div><br>`;
+                resultText += `<div class="year-result" style="background-color: ${getYearColor(yearName)};">
+                    <strong>${yearName} GPA</strong><br>
+                    Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>
+                    Weighted GPA: ${yearWeightedGPA.toFixed(3)}
+                </div>`;
             }
 
             if (totalCredits === 0) {
@@ -495,6 +566,21 @@
             }
 
             document.getElementById('result').innerHTML = resultText;
+        }
+
+        function getYearColor(yearName) {
+            switch (yearName) {
+                case 'Freshman':
+                    return '#a8dadc';
+                case 'Sophomore':
+                    return '#f1fa8c';
+                case 'Junior':
+                    return '#ffb4a2';
+                case 'Senior':
+                    return '#bdb2ff';
+                default:
+                    return '#ffffff';
+            }
         }
     </script>
 </body>
