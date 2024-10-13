@@ -1,0 +1,154 @@
+<!-- Save this as exam_calculator.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 18px;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exam Calculator</h1>
+    <form id="examForm">
+        <label for="calculationType">Calculation Type:</label>
+        <select id="calculationType" required>
+            <option value="">Select an option</option>
+            <option value="firstSemester">1st Semester</option>
+            <option value="fullYear">Full Year</option>
+        </select>
+
+        <div id="firstSemesterFields" style="display: none;">
+            <label for="sem1Grade">Semester 1 Grade (%):</label>
+            <input type="number" id="sem1Grade" min="0" max="100" required>
+
+            <label for="desiredGrade">Desired Semester Grade (%):</label>
+            <input type="number" id="desiredGrade" min="0" max="100" required>
+        </div>
+
+        <div id="fullYearFields" style="display: none;">
+            <label for="sem1GradeFull">Semester 1 Grade (%):</label>
+            <input type="number" id="sem1GradeFull" min="0" max="100" required>
+
+            <label for="sem1Exam">Semester 1 Exam Grade (%):</label>
+            <input type="number" id="sem1Exam" min="0" max="100" required>
+
+            <label for="sem2Grade">Semester 2 Grade (%):</label>
+            <input type="number" id="sem2Grade" min="0" max="100" required>
+
+            <label for="desiredYearGrade">Desired Year Grade (%):</label>
+            <input type="number" id="desiredYearGrade" min="0" max="100" required>
+        </div>
+
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const calculationType = document.getElementById('calculationType');
+        const firstSemesterFields = document.getElementById('firstSemesterFields');
+        const fullYearFields = document.getElementById('fullYearFields');
+
+        calculationType.addEventListener('change', function() {
+            if (this.value === 'firstSemester') {
+                firstSemesterFields.style.display = 'block';
+                fullYearFields.style.display = 'none';
+            } else if (this.value === 'fullYear') {
+                firstSemesterFields.style.display = 'none';
+                fullYearFields.style.display = 'block';
+            } else {
+                firstSemesterFields.style.display = 'none';
+                fullYearFields.style.display = 'none';
+            }
+            document.getElementById('result').innerHTML = '';
+        });
+
+        function calculate() {
+            const type = calculationType.value;
+            let resultText = '';
+            if (type === 'firstSemester') {
+                const sem1Grade = parseFloat(document.getElementById('sem1Grade').value);
+                const desiredGrade = parseFloat(document.getElementById('desiredGrade').value);
+
+                if (isNaN(sem1Grade) || isNaN(desiredGrade)) {
+                    alert('Please enter valid numbers.');
+                    return;
+                }
+
+                const requiredExamGrade = (desiredGrade - 0.8 * sem1Grade) / 0.2;
+
+                if (requiredExamGrade > 100) {
+                    resultText = 'It is not possible to achieve the desired grade.';
+                } else if (requiredExamGrade < 0) {
+                    resultText = 'You have already achieved the desired grade.';
+                } else {
+                    resultText = `You need to score at least ${requiredExamGrade.toFixed(2)}% on the exam.`;
+                }
+
+            } else if (type === 'fullYear') {
+                const sem1Grade = parseFloat(document.getElementById('sem1GradeFull').value);
+                const sem1Exam = parseFloat(document.getElementById('sem1Exam').value);
+                const sem2Grade = parseFloat(document.getElementById('sem2Grade').value);
+                const desiredYearGrade = parseFloat(document.getElementById('desiredYearGrade').value);
+
+                if (isNaN(sem1Grade) || isNaN(sem1Exam) || isNaN(sem2Grade) || isNaN(desiredYearGrade)) {
+                    alert('Please enter valid numbers.');
+                    return;
+                }
+
+                const sem1Total = 0.8 * sem1Grade + 0.2 * sem1Exam;
+                const requiredSem2ExamGrade = (2 * desiredYearGrade - sem1Total - 0.8 * sem2Grade) / 0.2;
+
+                if (requiredSem2ExamGrade > 100) {
+                    resultText = 'It is not possible to achieve the desired grade.';
+                } else if (requiredSem2ExamGrade < 0) {
+                    resultText = 'You have already achieved the desired grade.';
+                } else {
+                    resultText = `You need to score at least ${requiredSem2ExamGrade.toFixed(2)}% on the Semester 2 exam.`;
+                }
+
+            } else {
+                resultText = 'Please select a calculation type and fill out all fields.';
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
