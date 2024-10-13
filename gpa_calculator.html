@@ -58,10 +58,9 @@
             position: relative;
             display: inline-block;
         }
-        .tooltiptext {
+        .tooltip .tooltiptext {
             visibility: hidden;
             width: 320px;
-            max-width: 90vw;
             background-color: #2e2e2e;
             color: #f0f0f0;
             text-align: left;
@@ -69,13 +68,22 @@
             border-radius: 8px;
             position: absolute;
             z-index: 1;
-            top: 40px;
+            top: 30px;
             right: 0;
             opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: opacity 0.3s;
             font-size: 0.9em;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            overflow-wrap: break-word;
+        }
+        .tooltip .tooltiptext .close-tooltip {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #f0f0f0;
+            font-size: 1.2em;
+            cursor: pointer;
         }
         .tooltip.active .tooltiptext {
             visibility: visible;
@@ -270,10 +278,10 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
-            .tooltiptext {
+            .tooltip .tooltiptext {
                 width: 90%;
                 left: 5%;
-                top: 60px;
+                top: 50px;
                 right: auto;
                 word-wrap: break-word;
             }
@@ -288,6 +296,7 @@
             <div class="tooltip" style="position: absolute; top: 10px; right: 20px;">
                 <button class="info-button">❓</button>
                 <div class="tooltiptext" id="tooltipContent">
+                    <button class="close-tooltip">&times;</button>
                     <strong>Grading Scale:</strong>
                     A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
                     <br><br>
@@ -569,10 +578,16 @@
         // Tooltip functionality
         const infoButton = document.querySelector('.info-button');
         const tooltip = document.querySelector('.tooltip');
+        const closeTooltipBtn = document.querySelector('.close-tooltip');
 
         infoButton.addEventListener('click', function(event) {
             event.stopPropagation();
-            tooltip.classList.toggle('active');
+            tooltip.classList.add('active');
+        });
+
+        closeTooltipBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            tooltip.classList.remove('active');
         });
 
         document.addEventListener('click', function(event) {
