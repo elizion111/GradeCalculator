@@ -9,7 +9,7 @@
     <!-- Include Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Global styles */
+        /* Reset default browser styles */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -51,7 +51,34 @@
         .back-button {
             left: 20px;
         }
-
+        .info-button {
+            right: 20px;
+        }
+        .tooltip {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 320px;
+            background-color: #2e2e2e;
+            color: #f0f0f0;
+            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            position: absolute;
+            z-index: 1;
+            top: 30px;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
         .selection-step {
             text-align: center;
@@ -242,14 +269,6 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
-            .tooltiptext {
-                width: 90%;
-                left: 5%;
-                top: 60px;
-                right: auto;
-                white-space: normal;
-                word-wrap: break-word;
-            }
         }
     </style>
 </head>
@@ -258,6 +277,22 @@
         <header>
             <button class="back-button" onclick="window.location.href='index.html'">&larr;</button>
             <h1>GPA Calculator</h1>
+            <div class="tooltip">
+                <button class="info-button">❓</button>
+                <div class="tooltiptext">
+                    <strong>Grading Scale:</strong>
+                    A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
+                    <br><br>
+                    <strong>Single Year vs. Multi-Year:</strong>
+                    <br>Single Year calculates GPA for one academic year.
+                    <br>Multi-Year calculates cumulative GPA over multiple years.
+                    <br><br>
+                    <strong>Weighted vs. Unweighted GPA:</strong>
+                    <br>Unweighted GPA is calculated on a standard 4.0 scale.
+                    <br>Weighted GPA adds extra points for Honors/AP courses.
+                </div>
+            </div>
+        </header>
         <div id="initialSelection">
             <div class="selection-step" id="step1">
                 <h2>Select Calculation Type:</h2>
@@ -416,6 +451,7 @@
                 option.textContent = grade;
                 gradeSelect.appendChild(option);
             });
+            gradeSelect.style.fontFamily = 'Inter, sans-serif';
             courseEntry.appendChild(gradeSelect);
 
             // Honors/AP
@@ -504,8 +540,8 @@
 
                 resultText += `<div class="year-result">
                     <strong>${yearName} GPA</strong><br>
-                    <span class="gpa-label-unweighted">Unweighted GPA:</span> <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
-                    <span class="gpa-label-weighted">Weighted GPA:</span> <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
+                    Unweighted GPA: <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
+                    Weighted GPA: <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
                 </div>`;
             }
 
@@ -515,35 +551,12 @@
                 const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
                 const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
 
-                resultText += `<div class="cumulative-gpa"><span class="gpa-label-unweighted">Cumulative Unweighted GPA:</span> <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
-                resultText += `<div class="cumulative-gpa"><span class="gpa-label-weighted">Cumulative Weighted GPA:</span> <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
             }
 
             document.getElementById('result').innerHTML = resultText;
         }
-
-        // Tooltip functionality
-        const infoButton = document.querySelector('.info-button');
-        const tooltipContent = document.getElementById('tooltipContent');
-
-        infoButton.addEventListener('click', function(event) {
-            event.stopPropagation();
-            if (tooltipContent.style.display === 'block') {
-                tooltipContent.style.display = 'none';
-            } else {
-                tooltipContent.style.display = 'block';
-            }
-        });
-
-        function closeTooltip() {
-            tooltipContent.style.display = 'none';
-        }
-
-        document.addEventListener('click', function(event) {
-            if (!tooltipContent.contains(event.target) && event.target !== infoButton) {
-                tooltipContent.style.display = 'none';
-            }
-        });
     </script>
 </body>
 </html>
