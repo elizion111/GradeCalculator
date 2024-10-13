@@ -55,8 +55,9 @@
             right: 20px;
         }
         .tooltip {
-            position: relative;
-            display: inline-block;
+            position: absolute;
+            top: 5px;
+            right: 20px;
         }
         .tooltip .tooltiptext {
             visibility: hidden;
@@ -74,24 +75,185 @@
             transition: opacity 0.3s;
             font-size: 0.9em;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            overflow-wrap: break-word;
         }
-        .tooltip .tooltiptext .close-tooltip {
-            position: absolute;
-            top: 5px;
-            right: 8px;
-            background: none;
-            border: none;
-            color: #f0f0f0;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-        .tooltip.active .tooltiptext {
+        .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
         }
-        /* The rest of your CSS remains unchanged */
-
+        .selection-step {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .selection-step h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #a0a0a0;
+        }
+        .selection-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            background-color: #3a3a3a;
+            color: #f0f0f0;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.2s, transform 0.2s;
+            border: none;
+        }
+        .selection-option:hover {
+            background-color: #5a5a5a;
+            transform: scale(1.02);
+        }
+        .selection-option.selected {
+            background-color: #0071e3;
+            color: #ffffff;
+        }
+        form {
+            background-color: #2e2e2e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .year-section {
+            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 15px;
+            background-color: #2a2a2a;
+        }
+        .year-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #3a3a3a;
+        }
+        .course-entry {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .course-entry-number {
+            width: 30px;
+            text-align: center;
+            font-size: 1em;
+            color: #a0a0a0;
+            margin-right: 10px;
+        }
+        .course-entry input[type="text"], .course-entry select {
+            background-color: #3a3a3a;
+            color: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1em;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            flex: 1;
+        }
+        .course-entry label {
+            margin-right: 10px;
+            font-size: 1em;
+            color: #f0f0f0;
+        }
+        .course-entry input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+        }
+        .remove-course-btn {
+            background-color: #e74c3c;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-left: auto;
+        }
+        .remove-course-btn:hover {
+            background-color: #c0392b;
+        }
+        .add-course-btn {
+            background-color: #3a3a3a;
+            color: #f0f0f0;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+            display: block;
+            width: auto;
+        }
+        .add-course-btn:hover {
+            background-color: #5a5a5a;
+        }
+        .calculate-btn {
+            background-color: #0071e3;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        .calculate-btn:hover {
+            background-color: #005bb5;
+        }
+        .change-selection-btn {
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+        }
+        .change-selection-btn:hover {
+            background-color: #5a6268;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #f0f0f0;
+        }
+        .cumulative-gpa {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-top: 30px;
+            color: #ffffff;
+            text-align: center;
+        }
+        .cumulative-gpa .gpa-value {
+            color: #0071e3;
+        }
+        .year-result {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+            text-align: center;
+            border: 1px solid #3a3a3a;
+        }
+        .year-result .gpa-value {
+            color: #0071e3;
+        }
         /* Responsive adjustments */
         @media (max-width: 600px) {
             header h1 {
@@ -107,13 +269,6 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
-            .tooltip .tooltiptext {
-                width: 90%;
-                left: 5%;
-                top: 50px;
-                right: auto;
-                word-wrap: break-word;
-            }
         }
     </style>
 </head>
@@ -122,10 +277,9 @@
         <header>
             <button class="back-button" onclick="window.location.href='index.html'">&larr;</button>
             <h1>GPA Calculator</h1>
-            <div class="tooltip" style="position: absolute; top: 10px; right: 20px;">
+            <div class="tooltip">
                 <button class="info-button">❓</button>
-                <div class="tooltiptext" id="tooltipContent">
-                    <button class="close-tooltip">&times;</button>
+                <div class="tooltiptext">
                     <strong>Grading Scale:</strong>
                     A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
                     <br><br>
@@ -139,39 +293,270 @@
                 </div>
             </div>
         </header>
-        <!-- ... rest of your HTML remains unchanged ... -->
         <div id="initialSelection">
-            <!-- Your initial selection content -->
+            <div class="selection-step" id="step1">
+                <h2>Select Calculation Type:</h2>
+                <div class="selection-option" data-value="singleYear">Single Year</div>
+                <div class="selection-option" data-value="multiYear">Multi-Year</div>
+            </div>
+            <div class="selection-step" id="step2" style="display: none;">
+                <h2>Select Years:</h2>
+                <div class="selection-option" data-value="sophomore">Sophomore (2 years)</div>
+                <div class="selection-option" data-value="junior">Junior (3 years)</div>
+                <div class="selection-option" data-value="senior">Senior (4 years)</div>
+            </div>
         </div>
         <form id="gpaForm" style="display: none;">
-            <!-- Your form content -->
+            <button type="button" class="change-selection-btn" id="changeSelectionBtn">Change Selection</button>
+            <div id="yearSections">
+                <!-- Year sections will be injected here -->
+            </div>
+            <button type="button" class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
         </form>
         <div id="result"></div>
     </div>
     <script>
-        // ... your existing JavaScript code ...
+        const initialSelection = document.getElementById('initialSelection');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const selectionOptions = document.querySelectorAll('.selection-option');
+        const gpaForm = document.getElementById('gpaForm');
+        const yearSections = document.getElementById('yearSections');
+        const changeSelectionBtn = document.getElementById('changeSelectionBtn');
+        const maxCourses = 11;
 
-        // Tooltip functionality
-        const infoButton = document.querySelector('.info-button');
-        const tooltip = document.querySelector('.tooltip');
-        const closeTooltipBtn = document.querySelector('.close-tooltip');
+        const gradeScale = {
+            'A+': 4.33,
+            'A': 4.00,
+            'A-': 3.67,
+            'B+': 3.33,
+            'B': 3.00,
+            'B-': 2.67,
+            'C+': 2.33,
+            'C': 2.00,
+            'C-': 1.67,
+            'D': 1.00,
+            'F': 0.00
+        };
 
-        infoButton.addEventListener('click', function(event) {
-            event.stopPropagation();
-            tooltip.classList.add('active');
+        let calculationTypeValue = '';
+        let yearSelectionValue = '';
+
+        selectionOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove 'selected' class from siblings
+                this.parentNode.querySelectorAll('.selection-option').forEach(sibling => {
+                    sibling.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                if (this.parentNode.id === 'step1') {
+                    calculationTypeValue = this.getAttribute('data-value');
+                    if (calculationTypeValue === 'multiYear') {
+                        step2.style.display = 'block';
+                    } else {
+                        initialSelection.style.display = 'none';
+                        gpaForm.style.display = 'block';
+                        createYearSection('Single Year');
+                    }
+                } else if (this.parentNode.id === 'step2') {
+                    yearSelectionValue = this.getAttribute('data-value');
+                    initialSelection.style.display = 'none';
+                    gpaForm.style.display = 'block';
+                    const years = getYearsArray(yearSelectionValue);
+                    years.forEach(year => {
+                        createYearSection(year);
+                    });
+                }
+            });
         });
 
-        closeTooltipBtn.addEventListener('click', function(event) {
-            event.stopPropagation();
-            tooltip.classList.remove('active');
+        changeSelectionBtn.addEventListener('click', function() {
+            location.reload();
         });
 
-        // Removed the event listener that closes the tooltip when clicking outside
-        // document.addEventListener('click', function(event) {
-        //     if (!tooltip.contains(event.target)) {
-        //         tooltip.classList.remove('active');
-        //     }
-        // });
+        function getYearsArray(selection) {
+            switch (selection) {
+                case 'sophomore':
+                    return ['Freshman', 'Sophomore'];
+                case 'junior':
+                    return ['Freshman', 'Sophomore', 'Junior'];
+                case 'senior':
+                    return ['Freshman', 'Sophomore', 'Junior', 'Senior'];
+                default:
+                    return [];
+            }
+        }
+
+        function createYearSection(yearName) {
+            const section = document.createElement('div');
+            section.className = 'year-section';
+
+            section.dataset.year = yearName;
+
+            const header = document.createElement('div');
+            header.className = 'year-header';
+            header.textContent = yearName;
+            section.appendChild(header);
+
+            const courseList = document.createElement('div');
+            courseList.className = 'course-list';
+            section.appendChild(courseList);
+
+            const addCourseBtn = document.createElement('button');
+            addCourseBtn.type = 'button';
+            addCourseBtn.className = 'add-course-btn';
+            addCourseBtn.textContent = '+ Add Course';
+            addCourseBtn.addEventListener('click', function() {
+                addCourseEntry(courseList);
+            });
+            section.appendChild(addCourseBtn);
+
+            // Add the first course entry by default
+            addCourseEntry(courseList);
+
+            yearSections.appendChild(section);
+        }
+
+        function addCourseEntry(courseList) {
+            if (courseList.children.length >= maxCourses) {
+                alert('Maximum number of courses reached.');
+                return;
+            }
+
+            const courseEntry = document.createElement('div');
+            courseEntry.className = 'course-entry';
+
+            // Course Number
+            const courseNumber = document.createElement('div');
+            courseNumber.className = 'course-entry-number';
+            courseNumber.textContent = courseList.children.length + 1;
+            courseEntry.appendChild(courseNumber);
+
+            // Course Name
+            const courseNameInput = document.createElement('input');
+            courseNameInput.type = 'text';
+            courseNameInput.placeholder = 'Course Name';
+            courseEntry.appendChild(courseNameInput);
+
+            // Grade
+            const gradeSelect = document.createElement('select');
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Grade';
+            gradeSelect.appendChild(defaultOption);
+            Object.keys(gradeScale).forEach(grade => {
+                const option = document.createElement('option');
+                option.value = grade;
+                option.textContent = grade;
+                gradeSelect.appendChild(option);
+            });
+            gradeSelect.style.fontFamily = 'Inter, sans-serif';
+            courseEntry.appendChild(gradeSelect);
+
+            // Honors/AP
+            const honorsLabel = document.createElement('label');
+            const honorsCheckbox = document.createElement('input');
+            honorsCheckbox.type = 'checkbox';
+            honorsLabel.appendChild(honorsCheckbox);
+            honorsLabel.appendChild(document.createTextNode(' Honors/AP'));
+            courseEntry.appendChild(honorsLabel);
+
+            // Single Semester
+            const semesterLabel = document.createElement('label');
+            const semesterCheckbox = document.createElement('input');
+            semesterCheckbox.type = 'checkbox';
+            semesterLabel.appendChild(semesterCheckbox);
+            semesterLabel.appendChild(document.createTextNode(' Single Semester'));
+            courseEntry.appendChild(semesterLabel);
+
+            // Remove Button
+            const removeCourseBtn = document.createElement('button');
+            removeCourseBtn.type = 'button';
+            removeCourseBtn.className = 'remove-course-btn';
+            removeCourseBtn.textContent = 'Remove';
+            removeCourseBtn.addEventListener('click', function() {
+                courseList.removeChild(courseEntry);
+                updateCourseNumbers(courseList);
+            });
+            courseEntry.appendChild(removeCourseBtn);
+
+            courseList.appendChild(courseEntry);
+        }
+
+        function updateCourseNumbers(courseList) {
+            const courseEntries = courseList.querySelectorAll('.course-entry-number');
+            courseEntries.forEach((numberElement, index) => {
+                numberElement.textContent = index + 1;
+            });
+        }
+
+        function calculateGPA() {
+            let totalUnweightedPoints = 0;
+            let totalWeightedPoints = 0;
+            let totalCredits = 0;
+            let resultText = '';
+
+            const yearSectionsArray = Array.from(document.querySelectorAll('.year-section'));
+            for (let section of yearSectionsArray) {
+                const yearName = section.dataset.year;
+                const courseEntries = Array.from(section.querySelectorAll('.course-entry'));
+                let yearUnweightedTotal = 0;
+                let yearWeightedTotal = 0;
+                let yearCredits = 0;
+
+                for (let entry of courseEntries) {
+                    const courseName = entry.querySelector('input[type="text"]').value.trim();
+                    const grade = entry.querySelector('select').value;
+                    const checkboxes = entry.querySelectorAll('input[type="checkbox"]');
+                    const isHonors = checkboxes[0].checked;
+                    const isSemester = checkboxes[1].checked;
+
+                    // Skip incomplete courses
+                    if (!courseName || !grade) {
+                        continue;
+                    }
+
+                    let weight = isSemester ? 0.5 : 1.0;
+                    let unweightedGradeValue = gradeScale[grade];
+                    let weightedGradeValue = unweightedGradeValue + (isHonors ? 1.0 : 0.0);
+
+                    yearUnweightedTotal += unweightedGradeValue * weight;
+                    yearWeightedTotal += weightedGradeValue * weight;
+                    yearCredits += weight;
+                }
+
+                if (yearCredits === 0) {
+                    // No valid courses in this year
+                    continue;
+                }
+
+                const yearUnweightedGPA = yearUnweightedTotal / yearCredits;
+                const yearWeightedGPA = yearWeightedTotal / yearCredits;
+
+                totalUnweightedPoints += yearUnweightedTotal;
+                totalWeightedPoints += yearWeightedTotal;
+                totalCredits += yearCredits;
+
+                resultText += <div class="year-result">
+                    <strong>${yearName} GPA</strong><br>
+                    Unweighted GPA: <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
+                    Weighted GPA: <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
+                </div>;
+            }
+
+            if (totalCredits === 0) {
+                resultText = 'No valid courses entered.';
+            } else {
+                const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
+                const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
+
+                resultText += <div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>;
+                resultText += <div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>;
+            }
+
+            document.getElementById('result').innerHTML = resultText;
+        }
     </script>
 </body>
 </html>
