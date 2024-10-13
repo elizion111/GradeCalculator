@@ -18,14 +18,10 @@
             font-family: 'Helvetica', 'Arial', sans-serif;
             background-color: #f5f5f7;
             color: #000;
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
         }
         .container {
-            flex: 1;
             max-width: 900px;
-            width: 100%;
             margin: auto;
             padding: 20px;
         }
@@ -33,11 +29,13 @@
             position: relative;
             text-align: center;
             margin-bottom: 20px;
+            padding-top: 20px;
         }
         header h1 {
             font-size: 2.5em;
-            font-weight: 500;
-            margin-top: 60px;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
         }
         .back-button {
             position: absolute;
@@ -46,12 +44,12 @@
             background: none;
             border: none;
             color: #0071e3;
-            font-size: 1em;
+            font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
         }
         .back-button:hover {
-            text-decoration: underline;
+            color: #005bb5;
         }
         .info-icon {
             position: absolute;
@@ -62,13 +60,16 @@
             padding: 10px;
             color: #0071e3;
         }
+        .info-icon:hover {
+            color: #005bb5;
+        }
         .tooltip {
             position: relative;
             display: inline-block;
         }
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 300px;
+            width: 320px;
             background-color: #fff;
             color: #000;
             text-align: left;
@@ -81,7 +82,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             font-size: 0.9em;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         .tooltip:hover .tooltiptext {
             visibility: visible;
@@ -98,6 +99,7 @@
         .selection-step h2 {
             font-size: 1.5em;
             margin-bottom: 10px;
+            color: #333;
         }
         .selection-option {
             display: inline-block;
@@ -105,7 +107,7 @@
             padding: 15px 25px;
             background-color: #0071e3;
             color: #fff;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 1.2em;
             transition: background-color 0.2s, transform 0.2s;
@@ -123,7 +125,7 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             margin-top: 20px;
         }
         .year-section {
@@ -136,10 +138,14 @@
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
         }
         .course-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
         }
         .course-table th, .course-table td {
             border: 1px solid #d2d2d7;
@@ -148,14 +154,15 @@
         }
         .course-table th {
             background-color: #f5f5f7;
+            font-weight: 600;
         }
         .add-course-btn, .remove-course-btn, button.calculate-btn {
             background-color: #0071e3;
             color: #fff;
             border: none;
-            padding: 8px 12px;
-            font-size: 0.9em;
-            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 50px;
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.2s;
@@ -165,6 +172,7 @@
         }
         .remove-course-btn {
             background-color: #e74c3c;
+            border-radius: 8px;
         }
         .remove-course-btn:hover {
             background-color: #c0392b;
@@ -179,6 +187,7 @@
             font-size: 1.5em;
             font-weight: 600;
             margin-top: 30px;
+            color: #333;
         }
         /* Year colors */
         .year-freshman {
@@ -193,6 +202,23 @@
         .year-senior {
             border-color: #3498db;
         }
+        .year-freshman .year-header {
+            background-color: #2ecc71;
+        }
+        .year-sophomore .year-header {
+            background-color: #9b59b6;
+        }
+        .year-junior .year-header {
+            background-color: #e67e22;
+        }
+        .year-senior .year-header {
+            background-color: #3498db;
+        }
+        /* Adjust checkbox sizes */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
         /* Responsive adjustments */
         @media (max-width: 600px) {
             header h1 {
@@ -206,12 +232,21 @@
                 font-size: 1em;
                 padding: 12px;
             }
+            .course-table th, .course-table td {
+                padding: 6px;
+            }
+            .add-course-btn, .remove-course-btn {
+                font-size: 0.9em;
+            }
+            .back-button, .info-icon {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <button class="back-button" onclick="window.location.href='index.html'">&larr; Back</button>
+        <button class="back-button" onclick="window.location.href='index.html'">&larr;</button>
         <div class="tooltip">
             <span class="info-icon">❓</span>
             <div class="tooltiptext">
@@ -258,7 +293,6 @@
         const selectionOptions = document.querySelectorAll('.selection-option');
         const gpaForm = document.getElementById('gpaForm');
         const yearSections = document.getElementById('yearSections');
-        const changeSelectionBtn = document.getElementById('changeSelectionBtn');
         const maxCourses = 11;
 
         const gradeScale = {
@@ -294,7 +328,6 @@
                         initialSelection.style.display = 'none';
                         gpaForm.style.display = 'block';
                         createYearSection('Single Year');
-                        changeSelectionBtn.style.display = 'inline';
                     }
                 } else if (this.parentNode.id === 'step2') {
                     yearSelectionValue = this.getAttribute('data-value');
@@ -304,7 +337,6 @@
                     years.forEach(year => {
                         createYearSection(year);
                     });
-                    changeSelectionBtn.style.display = 'inline';
                 }
             });
         });
@@ -355,7 +387,7 @@
             courseTable.className = 'course-table';
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
-            ['Course Name', 'Grade', 'Honors/AP', 'Single Semester', 'Remove'].forEach(text => {
+            ['Course Name', 'Grade', 'Honors/AP', 'Single Semester', ''].forEach(text => {
                 const th = document.createElement('th');
                 th.textContent = text;
                 headerRow.appendChild(th);
@@ -512,8 +544,8 @@
                 }
 
                 resultText += `<div class="year-header" style="${colorStyle}">${yearName} GPA</div>`;
-                resultText += `<small style="${colorStyle}">Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
-                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}</small><br><br>`;
+                resultText += `<div style="${colorStyle}">Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
+                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}</div><br>`;
             }
 
             if (totalCredits === 0) {
