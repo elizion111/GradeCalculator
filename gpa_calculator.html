@@ -55,11 +55,10 @@
             right: 20px;
         }
         .tooltip {
-            position: absolute;
-            top: 5px;
-            right: 20px;
+            position: relative;
+            display: inline-block;
         }
-        .tooltip .tooltiptext {
+        .tooltiptext {
             visibility: hidden;
             width: 320px;
             background-color: #2e2e2e;
@@ -292,6 +291,8 @@
                 left: 5%;
                 top: 60px;
                 right: auto;
+                white-space: normal;
+                word-wrap: break-word;
             }
         }
     </style>
@@ -584,7 +585,7 @@
 
         /* Close tooltip function for mobile */
         function closeTooltip() {
-            document.getElementById('tooltipContent').style.display = 'none';
+            tooltip.classList.remove('active');
         }
 
         /* Tooltip functionality */
