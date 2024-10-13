@@ -60,7 +60,7 @@
             right: 20px;
         }
         .tooltip .tooltiptext {
-            visibility: hidden;
+            display: none;
             width: 320px;
             background-color: #2e2e2e;
             color: #f0f0f0;
@@ -71,14 +71,8 @@
             z-index: 1;
             top: 30px;
             right: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
             font-size: 0.9em;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
         }
         .selection-step {
             text-align: center;
@@ -269,6 +263,14 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
+            .tooltip .tooltiptext {
+                width: 90%;
+                left: 5%;
+                top: 60px;
+                right: auto;
+                white-space: normal;
+                word-wrap: break-word;
+            }
         }
     </style>
 </head>
@@ -279,7 +281,7 @@
             <h1>GPA Calculator</h1>
             <div class="tooltip">
                 <button class="info-button">❓</button>
-                <div class="tooltiptext">
+                <div class="tooltiptext" id="tooltipContent">
                     <strong>Grading Scale:</strong>
                     A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
                     <br><br>
@@ -466,6 +468,7 @@
             const semesterLabel = document.createElement('label');
             const semesterCheckbox = document.createElement('input');
             semesterCheckbox.type = 'checkbox';
+            semesterCheckbox.className = 'semester-checkbox';
             semesterLabel.appendChild(semesterCheckbox);
             semesterLabel.appendChild(document.createTextNode(' Single Semester'));
             courseEntry.appendChild(semesterLabel);
@@ -557,6 +560,21 @@
 
             document.getElementById('result').innerHTML = resultText;
         }
+
+        // Tooltip functionality
+        const infoButton = document.querySelector('.info-button');
+        const tooltipContent = document.querySelector('.tooltiptext');
+
+        infoButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            tooltipContent.style.display = (tooltipContent.style.display === 'block') ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!tooltipContent.contains(event.target) && event.target !== infoButton) {
+                tooltipContent.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
