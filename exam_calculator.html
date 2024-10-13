@@ -1,5 +1,3 @@
-<!-- Save this as exam_calculator.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,13 +111,7 @@
 
                 const requiredExamGrade = (desiredGrade - 0.8 * sem1Grade) / 0.2;
 
-                if (requiredExamGrade > 100) {
-                    resultText = 'It is not possible to achieve the desired grade.';
-                } else if (requiredExamGrade < 0) {
-                    resultText = 'You have already achieved the desired grade.';
-                } else {
-                    resultText = `You need to score at least ${requiredExamGrade.toFixed(2)}% on the exam.`;
-                }
+                resultText = `You need to score ${requiredExamGrade.toFixed(2)}% on the exam to achieve your desired grade.`;
 
             } else if (type === 'fullYear') {
                 const sem1Grade = parseFloat(document.getElementById('sem1GradeFull').value);
@@ -135,13 +127,7 @@
                 const sem1Total = 0.8 * sem1Grade + 0.2 * sem1Exam;
                 const requiredSem2ExamGrade = (2 * desiredYearGrade - sem1Total - 0.8 * sem2Grade) / 0.2;
 
-                if (requiredSem2ExamGrade > 100) {
-                    resultText = 'It is not possible to achieve the desired grade.';
-                } else if (requiredSem2ExamGrade < 0) {
-                    resultText = 'You have already achieved the desired grade.';
-                } else {
-                    resultText = `You need to score at least ${requiredSem2ExamGrade.toFixed(2)}% on the Semester 2 exam.`;
-                }
+                resultText = `You need to score ${requiredSem2ExamGrade.toFixed(2)}% on the Semester 2 exam to achieve your desired year grade.`;
 
             } else {
                 resultText = 'Please select a calculation type and fill out all fields.';
