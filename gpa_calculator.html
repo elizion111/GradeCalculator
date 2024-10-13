@@ -65,7 +65,7 @@
         }
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 250px;
+            width: 280px;
             background-color: #fff;
             color: #000;
             text-align: left;
@@ -84,26 +84,58 @@
             visibility: visible;
             opacity: 1;
         }
+        .tooltip strong {
+            display: block;
+            margin-bottom: 5px;
+        }
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        .selection-step {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .selection-step h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .selection-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            background-color: #f5f5f7;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.2s, transform 0.2s;
+            border: 1px solid #d2d2d7;
+        }
+        .selection-option:hover {
+            background-color: #e5e5e7;
+            transform: scale(1.02);
+        }
+        .selection-option.selected {
+            background-color: #0071e3;
+            color: #fff;
+            border-color: #0071e3;
+        }
         label {
             display: block;
-            margin: 15px 0 5px;
+            margin: 10px 0 5px;
             font-size: 1em;
         }
         input[type="text"], select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             font-size: 1em;
             border: 1px solid #d2d2d7;
             border-radius: 8px;
             background-color: #f5f5f7;
         }
-        .add-course-btn, .remove-course-btn, button {
+        .add-course-btn, .remove-course-btn, button.calculate-btn {
             background-color: #0071e3;
             color: #fff;
             border: none;
@@ -114,18 +146,18 @@
             margin-top: 10px;
             transition: background-color 0.2s;
         }
-        .add-course-btn:hover, .remove-course-btn:hover, button:hover {
+        .add-course-btn:hover, .remove-course-btn:hover, button.calculate-btn:hover {
             background-color: #005bb5;
         }
         .course-entry {
             background-color: #f5f5f7;
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             margin-bottom: 10px;
         }
         .course-number {
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         #result {
             margin-top: 30px;
@@ -134,28 +166,53 @@
             text-align: center;
         }
         .year-header {
-            font-size: 1.5em;
+            font-size: 1.2em;
             margin-top: 20px;
             margin-bottom: 10px;
             font-weight: 500;
+        }
+        .cumulative-gpa {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-top: 30px;
         }
         @media (max-width: 600px) {
             header h1 {
                 font-size: 2em;
             }
-            .form-group {
-                flex-direction: column;
+            .selection-option {
+                font-size: 1em;
+                padding: 10px 15px;
             }
-            .form-group label, .form-group input, .form-group select {
-                width: 100%;
+            button.calculate-btn {
+                font-size: 1em;
+                padding: 12px;
             }
-            .checkbox-group {
-                flex-direction: row;
-            }
-            button, .add-course-btn, .remove-course-btn {
-                width: 100%;
-                margin-top: 10px;
-            }
+        }
+        .course-entry {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .course-entry .form-group {
+            flex: 1 1 45%;
+            min-width: 150px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        .course-entry .checkbox-group {
+            flex: 1 1 30%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+        .checkbox-group label {
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        .remove-course-btn {
+            flex: 1 1 100%;
+            max-width: 100px;
         }
     </style>
 </head>
@@ -167,50 +224,45 @@
             <div class="tooltip">
                 <span class="info-icon">❓</span>
                 <div class="tooltiptext">
-                    <strong>Grading Scale:</strong><br>
-                    A+ = 4.33<br>
-                    A = 4.00<br>
-                    A- = 3.67<br>
-                    B+ = 3.33<br>
-                    B = 3.00<br>
-                    B- = 2.67<br>
-                    C+ = 2.33<br>
-                    C = 2.00<br>
-                    C- = 1.67<br>
-                    D = 1.00<br>
-                    F = 0.00
+                    <strong>Grading Scale:</strong>
+                    A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
+                    <br><br>
+                    <strong>Single Year vs. Multi-Year:</strong>
+                    <br>Single Year calculates GPA for one academic year.
+                    <br>Multi-Year calculates cumulative GPA over multiple years.
+                    <br><br>
+                    <strong>Weighted vs. Unweighted GPA:</strong>
+                    <br>Unweighted GPA is calculated on a standard 4.0 scale.
+                    <br>Weighted GPA adds extra points for Honors/AP courses.
                 </div>
             </div>
         </header>
-        <form id="gpaForm">
-            <label for="calculationType">Calculation Type:</label>
-            <select id="calculationType">
-                <option value="">Select an option</option>
-                <option value="singleYear">Single Year</option>
-                <option value="multiYear">Multi-Year</option>
-            </select>
-
-            <div id="multiYearOptions" style="display: none;">
-                <label for="yearSelection">Select Years:</label>
-                <select id="yearSelection">
-                    <option value="">Select an option</option>
-                    <option value="sophomore">Sophomore (2 years)</option>
-                    <option value="junior">Junior (3 years)</option>
-                    <option value="senior">Senior (4 years)</option>
-                </select>
+        <div id="initialSelection">
+            <div class="selection-step" id="step1">
+                <h2>Select Calculation Type:</h2>
+                <div class="selection-option" data-value="singleYear">Single Year</div>
+                <div class="selection-option" data-value="multiYear">Multi-Year</div>
             </div>
-
+            <div class="selection-step" id="step2" style="display: none;">
+                <h2>Select Years:</h2>
+                <div class="selection-option" data-value="sophomore">Sophomore (2 years)</div>
+                <div class="selection-option" data-value="junior">Junior (3 years)</div>
+                <div class="selection-option" data-value="senior">Senior (4 years)</div>
+            </div>
+        </div>
+        <form id="gpaForm" style="display: none;">
             <div id="yearSections">
             </div>
-
-            <button type="button" id="calculateBtn" onclick="calculateGPA()">Calculate GPA</button>
+            <button type="button" class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
         </form>
         <div id="result"></div>
     </div>
     <script>
-        const calculationType = document.getElementById('calculationType');
-        const multiYearOptions = document.getElementById('multiYearOptions');
-        const yearSelection = document.getElementById('yearSelection');
+        const initialSelection = document.getElementById('initialSelection');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const selectionOptions = document.querySelectorAll('.selection-option');
+        const gpaForm = document.getElementById('gpaForm');
         const yearSections = document.getElementById('yearSections');
         const maxCourses = 11;
 
@@ -228,26 +280,39 @@
             'F': 0.00
         };
 
-        calculationType.addEventListener('change', function() {
-            yearSections.innerHTML = '';
-            if (this.value === 'singleYear') {
-                multiYearOptions.style.display = 'none';
-                createYearSection('Single Year');
-            } else if (this.value === 'multiYear') {
-                multiYearOptions.style.display = 'block';
-            } else {
-                multiYearOptions.style.display = 'none';
-            }
-            document.getElementById('result').innerHTML = '';
-        });
+        let calculationTypeValue = '';
+        let yearSelectionValue = '';
 
-        yearSelection.addEventListener('change', function() {
-            yearSections.innerHTML = '';
-            const years = getYearsArray(this.value);
-            years.forEach(year => {
-                createYearSection(year);
+        selectionOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                this.parentNode.querySelectorAll('.selection-option').forEach(sibling => {
+                    sibling.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                if (this.parentNode.id === 'step1') {
+                    calculationTypeValue = this.getAttribute('data-value');
+                    step1.style.transform = 'scale(0.8)';
+                    step1.style.opacity = '0.6';
+                    if (calculationTypeValue === 'multiYear') {
+                        step2.style.display = 'block';
+                    } else {
+                        initialSelection.style.display = 'none';
+                        gpaForm.style.display = 'block';
+                        createYearSection('Single Year');
+                    }
+                } else if (this.parentNode.id === 'step2') {
+                    yearSelectionValue = this.getAttribute('data-value');
+                    step2.style.transform = 'scale(0.8)';
+                    step2.style.opacity = '0.6';
+                    initialSelection.style.display = 'none';
+                    gpaForm.style.display = 'block';
+                    const years = getYearsArray(yearSelectionValue);
+                    years.forEach(year => {
+                        createYearSection(year);
+                    });
+                }
             });
-            document.getElementById('result').innerHTML = '';
         });
 
         function getYearsArray(selection) {
@@ -383,15 +448,6 @@
         }
 
         function calculateGPA() {
-            let calculationTypeValue = calculationType.value;
-
-            // Default to 'Single Year' if not selected
-            if (!calculationTypeValue) {
-                calculationTypeValue = 'singleYear';
-                yearSections.innerHTML = '';
-                createYearSection('Single Year');
-            }
-
             let totalUnweightedPoints = 0;
             let totalWeightedPoints = 0;
             let totalCredits = 0;
@@ -437,8 +493,8 @@
                 totalCredits += yearCredits;
 
                 resultText += `<div class="year-header">${yearName} GPA</div>`;
-                resultText += `Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
-                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}<br><br>`;
+                resultText += `<small>Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
+                resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}</small><br><br>`;
             }
 
             if (totalCredits === 0) {
@@ -447,8 +503,8 @@
                 const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
                 const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
 
-                resultText += `<h2>Cumulative Unweighted GPA: ${cumulativeUnweightedGPA.toFixed(3)}</h2>`;
-                resultText += `<h2>Cumulative Weighted GPA: ${cumulativeWeightedGPA.toFixed(3)}</h2>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: ${cumulativeUnweightedGPA.toFixed(3)}</div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: ${cumulativeWeightedGPA.toFixed(3)}</div>`;
             }
 
             document.getElementById('result').innerHTML = resultText;
