@@ -34,8 +34,9 @@
         header h1 {
             font-size: 2.5em;
             font-weight: 600;
-            color: #ffffff;
+            color: #f0f0f0;
             text-align: center;
+            margin-bottom: 10px;
         }
         .back-button {
             position: absolute;
@@ -43,13 +44,11 @@
             left: 20px;
             background: none;
             border: none;
-            color: #ffffff;
+            color: #f0f0f0;
             font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
-        }
-        .back-button:hover {
-            color: #a0a0a0;
+            font-family: 'Inter', sans-serif;
         }
         form {
             background-color: #2e2e2e;
@@ -62,6 +61,7 @@
             margin: 15px 0 5px;
             font-size: 1em;
             color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
         }
         input[type="number"], select {
             width: 100%;
@@ -71,6 +71,7 @@
             border-radius: 8px;
             background-color: #3a3a3a;
             color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
         }
         button {
             width: 100%;
@@ -98,6 +99,10 @@
             color: #ffeb3b;
             font-weight: 600;
         }
+        /* Removed hover effect from back button */
+        .back-button:hover {
+            color: #f0f0f0;
+        }
         /* Responsive adjustments */
         @media (max-width: 600px) {
             header h1 {
@@ -121,7 +126,7 @@
         </header>
         <form id="examForm">
             <label for="calculationType">Select Calculation Type:</label>
-            <select id="calculationType">
+            <select id="calculationType" style="font-family: 'Inter', sans-serif;">
                 <option value="">Select an option</option>
                 <option value="firstSemester">1st Semester</option>
                 <option value="fullYear">Full Year</option>
