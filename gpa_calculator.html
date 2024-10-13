@@ -39,7 +39,7 @@
             margin-bottom: 10px;
         }
         .back-button, .info-button {
-            position: relative;
+            position: absolute;
             top: 20px;
             background: none;
             border: none;
@@ -55,30 +55,23 @@
             right: 20px;
         }
         .tooltip {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            position: relative;
+            display: inline-block;
         }
-        .tooltip .tooltiptext {
-            visibility: hidden;
+        .tooltiptext {
+            display: none;
             width: 320px;
             background-color: #2e2e2e;
             color: #f0f0f0;
             text-align: left;
             padding: 15px;
             border-radius: 8px;
-            position: relative;
+            position: absolute;
             z-index: 1;
             top: 50px;
             right: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
             font-size: 0.9em;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
         }
         /* Close button for tooltip */
         .tooltip .close-tooltip {
@@ -262,13 +255,6 @@
             text-align: center;
             border: 1px solid #3a3a3a;
         }
-        /* Different colors for Unweighted and Weighted GPA */
-        .gpa-label-unweighted {
-            color: #ffeb3b;
-        }
-        .gpa-label-weighted {
-            color: #00e676;
-        }
         .year-result .gpa-value {
             color: #0071e3;
         }
@@ -287,11 +273,13 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
-            .tooltip .tooltiptext {
+            .tooltiptext {
                 width: 90%;
                 left: 5%;
                 top: 60px;
                 right: auto;
+                white-space: normal;
+                word-wrap: break-word;
             }
         }
     </style>
@@ -582,10 +570,28 @@
             document.getElementById('result').innerHTML = resultText;
         }
 
-        /* Close tooltip function for mobile */
+        // Tooltip functionality
+        const infoButton = document.querySelector('.info-button');
+        const tooltipContent = document.getElementById('tooltipContent');
+
+        infoButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            if (tooltipContent.style.display === 'block') {
+                tooltipContent.style.display = 'none';
+            } else {
+                tooltipContent.style.display = 'block';
+            }
+        });
+
         function closeTooltip() {
-            document.getElementById('tooltipContent').style.display = 'none';
+            tooltipContent.style.display = 'none';
         }
+
+        document.addEventListener('click', function(event) {
+            if (!tooltipContent.contains(event.target) && event.target !== infoButton) {
+                tooltipContent.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
