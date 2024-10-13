@@ -1,83 +1,150 @@
+<!-- Save this as exam_calculator.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Exam Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Responsive -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: auto;
-            padding-top: 20px;
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            padding: 20px;
+        }
+        header {
+            position: relative;
             text-align: center;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 2.5em;
+        }
+        .back-button {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .back-button:hover {
+            text-decoration: underline;
         }
         form {
-            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
         }
         label {
             display: block;
             margin: 15px 0 5px;
+            font-size: 1.1em;
         }
-        input[type="number"] {
+        input[type="number"], select {
             width: 100%;
-            padding: 8px;
-            font-size: 16px;
-        }
-        select {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
         }
         button {
+            width: 100%;
             margin-top: 20px;
-            padding: 10px 15px;
-            font-size: 18px;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #f0f0f0;
         }
         #result {
             margin-top: 30px;
-            font-size: 20px;
+            font-size: 1.5em;
             font-weight: bold;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2em;
+            }
+            button {
+                font-size: 1em;
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Exam Calculator</h1>
-    <form id="examForm">
-        <label for="calculationType">Calculation Type:</label>
-        <select id="calculationType" required>
-            <option value="">Select an option</option>
-            <option value="firstSemester">1st Semester</option>
-            <option value="fullYear">Full Year</option>
-        </select>
+    <div class="container">
+        <header>
+            <button class="back-button" onclick="window.location.href='index.html'">&larr; Back</button>
+            <h1>Exam Calculator</h1>
+        </header>
+        <form id="examForm">
+            <label for="calculationType">Calculation Type:</label>
+            <select id="calculationType">
+                <option value="">Select an option</option>
+                <option value="firstSemester">1st Semester</option>
+                <option value="fullYear">Full Year</option>
+            </select>
 
-        <div id="firstSemesterFields" style="display: none;">
-            <label for="sem1Grade">Semester 1 Grade (%):</label>
-            <input type="number" id="sem1Grade" min="0" max="100" required>
+            <div id="firstSemesterFields" style="display: none;">
+                <label for="sem1Grade">Semester 1 Grade (%):</label>
+                <input type="number" id="sem1Grade" min="0" max="100">
 
-            <label for="desiredGrade">Desired Semester Grade (%):</label>
-            <input type="number" id="desiredGrade" min="0" max="100" required>
-        </div>
+                <label for="desiredGrade">Desired Semester Grade (%):</label>
+                <input type="number" id="desiredGrade" min="0" max="100">
+            </div>
 
-        <div id="fullYearFields" style="display: none;">
-            <label for="sem1GradeFull">Semester 1 Grade (%):</label>
-            <input type="number" id="sem1GradeFull" min="0" max="100" required>
+            <div id="fullYearFields" style="display: none;">
+                <label for="sem1GradeFull">Semester 1 Grade (%):</label>
+                <input type="number" id="sem1GradeFull" min="0" max="100">
 
-            <label for="sem1Exam">Semester 1 Exam Grade (%):</label>
-            <input type="number" id="sem1Exam" min="0" max="100" required>
+                <label for="sem1Exam">Semester 1 Exam Grade (%):</label>
+                <input type="number" id="sem1Exam" min="0" max="100">
 
-            <label for="sem2Grade">Semester 2 Grade (%):</label>
-            <input type="number" id="sem2Grade" min="0" max="100" required>
+                <label for="sem2Grade">Semester 2 Grade (%):</label>
+                <input type="number" id="sem2Grade" min="0" max="100">
 
-            <label for="desiredYearGrade">Desired Year Grade (%):</label>
-            <input type="number" id="desiredYearGrade" min="0" max="100" required>
-        </div>
+                <label for="desiredYearGrade">Desired Year Grade (%):</label>
+                <input type="number" id="desiredYearGrade" min="0" max="100">
+            </div>
 
-        <button type="button" onclick="calculate()">Calculate</button>
-    </form>
-    <div id="result"></div>
-
+            <button type="button" onclick="calculate()">Calculate</button>
+        </form>
+        <div id="result"></div>
+    </div>
     <script>
         const calculationType = document.getElementById('calculationType');
         const firstSemesterFields = document.getElementById('firstSemesterFields');
