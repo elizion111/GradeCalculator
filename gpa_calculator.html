@@ -466,6 +466,7 @@
             const semesterLabel = document.createElement('label');
             const semesterCheckbox = document.createElement('input');
             semesterCheckbox.type = 'checkbox';
+            semesterCheckbox.type = 'checkbox';
             semesterLabel.appendChild(semesterCheckbox);
             semesterLabel.appendChild(document.createTextNode(' Single Semester'));
             courseEntry.appendChild(semesterLabel);
@@ -538,11 +539,11 @@
                 totalWeightedPoints += yearWeightedTotal;
                 totalCredits += yearCredits;
 
-                resultText += <div class="year-result">
+                resultText += `<div class="year-result">
                     <strong>${yearName} GPA</strong><br>
                     Unweighted GPA: <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
                     Weighted GPA: <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
-                </div>;
+                </div>`;
             }
 
             if (totalCredits === 0) {
@@ -551,8 +552,8 @@
                 const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
                 const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
 
-                resultText += <div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>;
-                resultText += <div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>;
+                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
             }
 
             document.getElementById('result').innerHTML = resultText;
