@@ -1,22 +1,19 @@
-<!-- Save this as gpa_calculator.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>GPA Calculator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <style>
-        /* Reset default browser styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #2c3e50, #3498db);
-            color: #fff;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            background-color: #f5f5f7;
+            color: #000;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -35,16 +32,17 @@
         }
         header h1 {
             font-size: 2.5em;
+            font-weight: 500;
         }
         .back-button {
             position: absolute;
-            left: 0;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #fff;
-            font-size: 1.2em;
+            color: #0071e3;
+            font-size: 1em;
             cursor: pointer;
             padding: 10px;
         }
@@ -53,12 +51,13 @@
         }
         .info-icon {
             position: absolute;
-            right: 0;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.5em;
             cursor: pointer;
             padding: 10px;
+            color: #0071e3;
         }
         .tooltip {
             position: relative;
@@ -67,58 +66,61 @@
         .tooltip .tooltiptext {
             visibility: hidden;
             width: 250px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #fff;
             color: #000;
             text-align: left;
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 8px;
             position: absolute;
             z-index: 1;
-            top: 120%;
+            top: 130%;
             right: 0;
             opacity: 0;
             transition: opacity 0.3s;
             font-size: 0.9em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
         }
         form {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: #fff;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         label {
             display: block;
             margin: 15px 0 5px;
-            font-size: 1.1em;
+            font-size: 1em;
         }
         input[type="text"], select {
             width: 100%;
             padding: 10px;
             font-size: 1em;
-            border: none;
-            border-radius: 5px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            background-color: #f5f5f7;
         }
         .add-course-btn, .remove-course-btn, button {
-            background-color: #fff;
-            color: #2c3e50;
+            background-color: #0071e3;
+            color: #fff;
             border: none;
             padding: 10px 15px;
             font-size: 1em;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 10px;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s;
         }
         .add-course-btn:hover, .remove-course-btn:hover, button:hover {
-            background-color: #f0f0f0;
+            background-color: #005bb5;
         }
         .course-entry {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #f5f5f7;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 10px;
         }
         .course-number {
@@ -127,11 +129,16 @@
         }
         #result {
             margin-top: 30px;
-            font-size: 1.5em;
-            font-weight: bold;
+            font-size: 1.2em;
+            font-weight: 500;
             text-align: center;
         }
-        /* Responsive adjustments */
+        .year-header {
+            font-size: 1.5em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
         @media (max-width: 600px) {
             header h1 {
                 font-size: 2em;
@@ -194,7 +201,6 @@
             </div>
 
             <div id="yearSections">
-                <!-- Year sections will be injected here -->
             </div>
 
             <button type="button" id="calculateBtn" onclick="calculateGPA()">Calculate GPA</button>
@@ -280,7 +286,6 @@
             });
             section.appendChild(addCourseBtn);
 
-            // Add the first course entry by default
             addCourseEntry(courseList);
 
             yearSections.appendChild(section);
@@ -302,7 +307,6 @@
             courseNumberLabel.textContent = `Course ${courseNumber}`;
             courseEntry.appendChild(courseNumberLabel);
 
-            // Course Name
             const formGroup1 = document.createElement('div');
             formGroup1.className = 'form-group';
 
@@ -312,12 +316,10 @@
 
             const courseNameInput = document.createElement('input');
             courseNameInput.type = 'text';
-            // Removed 'required' attribute
             formGroup1.appendChild(courseNameInput);
 
             courseEntry.appendChild(formGroup1);
 
-            // Grade
             const formGroup2 = document.createElement('div');
             formGroup2.className = 'form-group';
 
@@ -326,7 +328,6 @@
             formGroup2.appendChild(gradeLabel);
 
             const gradeSelect = document.createElement('select');
-            // Removed 'required' attribute
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Select Grade';
@@ -341,7 +342,6 @@
 
             courseEntry.appendChild(formGroup2);
 
-            // Checkboxes
             const checkboxGroup = document.createElement('div');
             checkboxGroup.className = 'checkbox-group';
 
@@ -361,7 +361,6 @@
 
             courseEntry.appendChild(checkboxGroup);
 
-            // Remove Button
             const removeCourseBtn = document.createElement('button');
             removeCourseBtn.type = 'button';
             removeCourseBtn.className = 'remove-course-btn';
@@ -413,7 +412,6 @@
                     const isHonors = checkboxes[0].checked;
                     const isSemester = checkboxes[1].checked;
 
-                    // Skip incomplete courses
                     if (!courseName || !grade) {
                         continue;
                     }
@@ -428,7 +426,6 @@
                 }
 
                 if (yearCredits === 0) {
-                    // No valid courses in this year
                     continue;
                 }
 
@@ -439,7 +436,7 @@
                 totalWeightedPoints += yearWeightedTotal;
                 totalCredits += yearCredits;
 
-                resultText += `<h3>${yearName} GPA</h3>`;
+                resultText += `<div class="year-header">${yearName} GPA</div>`;
                 resultText += `Unweighted GPA: ${yearUnweightedGPA.toFixed(3)}<br>`;
                 resultText += `Weighted GPA: ${yearWeightedGPA.toFixed(3)}<br><br>`;
             }
