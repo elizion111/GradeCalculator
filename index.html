@@ -5,31 +5,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculator Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Responsive -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 50px;
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        a {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .button {
             display: inline-block;
             margin: 20px;
             padding: 20px 40px;
             text-decoration: none;
             color: white;
-            background-color: #4CAF50;
-            border-radius: 5px;
-            font-size: 24px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            font-size: 1.5em;
+            transition: background-color 0.3s, transform 0.3s;
         }
-        a:hover {
-            background-color: #45a049;
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+        @media (min-width: 600px) {
+            .buttons {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Calculator</h1>
-    <a href="exam_calculator.html">Exam Calculator</a>
-    <a href="gpa_calculator.html">GPA Calculator</a>
+    <div class="container">
+        <h1>Welcome to the Calculator</h1>
+        <div class="buttons">
+            <a href="exam_calculator.html" class="button">Exam Calculator</a>
+            <a href="gpa_calculator.html" class="button">GPA Calculator</a>
+        </div>
+    </div>
 </body>
 </html>
-
