@@ -9,7 +9,7 @@
     <!-- Include Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Reset default browser styles */
+        /* Global styles */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -55,11 +55,12 @@
             right: 20px;
         }
         .tooltip {
-            position: relative;
-            display: inline-block;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
-        .tooltiptext {
-            display: none;
+        .tooltip .tooltiptext {
+            visibility: hidden;
             width: 320px;
             background-color: #2e2e2e;
             color: #f0f0f0;
@@ -70,8 +71,25 @@
             z-index: 1;
             top: 50px;
             right: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
             font-size: 0.9em;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Close button for tooltip */
+        .tooltip .close-tooltip {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #f0f0f0;
+            font-size: 1em;
+            cursor: pointer;
         }
         .selection-step {
             text-align: center;
@@ -244,6 +262,13 @@
             text-align: center;
             border: 1px solid #3a3a3a;
         }
+        /* Different colors for Unweighted and Weighted GPA */
+        .gpa-label-unweighted {
+            color: #ffeb3b;
+        }
+        .gpa-label-weighted {
+            color: #00e676;
+        }
         .year-result .gpa-value {
             color: #0071e3;
         }
@@ -262,13 +287,11 @@
             .back-button, .info-button {
                 font-size: 1.2em;
             }
-            .tooltiptext {
+            .tooltip .tooltiptext {
                 width: 90%;
                 left: 5%;
                 top: 60px;
                 right: auto;
-                white-space: normal;
-                word-wrap: break-word;
             }
         }
     </style>
@@ -281,6 +304,7 @@
             <div class="tooltip">
                 <button class="info-button">❓</button>
                 <div class="tooltiptext" id="tooltipContent">
+                    <button class="close-tooltip" onclick="closeTooltip()">&times;</button>
                     <strong>Grading Scale:</strong>
                     A+ = 4.33, A = 4.00, A- = 3.67, B+ = 3.33, B = 3.00, B- = 2.67, C+ = 2.33, C = 2.00, C- = 1.67, D = 1.00, F = 0.00
                     <br><br>
@@ -452,7 +476,6 @@
                 option.textContent = grade;
                 gradeSelect.appendChild(option);
             });
-            gradeSelect.style.fontFamily = 'Inter, sans-serif';
             courseEntry.appendChild(gradeSelect);
 
             // Honors/AP
@@ -541,8 +564,8 @@
 
                 resultText += `<div class="year-result">
                     <strong>${yearName} GPA</strong><br>
-                    Unweighted GPA: <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
-                    Weighted GPA: <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
+                    <span class="gpa-label-unweighted">Unweighted GPA:</span> <span class="gpa-value">${yearUnweightedGPA.toFixed(3)}</span><br>
+                    <span class="gpa-label-weighted">Weighted GPA:</span> <span class="gpa-value">${yearWeightedGPA.toFixed(3)}</span>
                 </div>`;
             }
 
@@ -552,31 +575,17 @@
                 const cumulativeUnweightedGPA = totalUnweightedPoints / totalCredits;
                 const cumulativeWeightedGPA = totalWeightedPoints / totalCredits;
 
-                resultText += `<div class="cumulative-gpa">Cumulative Unweighted GPA: <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
-                resultText += `<div class="cumulative-gpa">Cumulative Weighted GPA: <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa"><span class="gpa-label-unweighted">Cumulative Unweighted GPA:</span> <span class="gpa-value">${cumulativeUnweightedGPA.toFixed(3)}</span></div>`;
+                resultText += `<div class="cumulative-gpa"><span class="gpa-label-weighted">Cumulative Weighted GPA:</span> <span class="gpa-value">${cumulativeWeightedGPA.toFixed(3)}</span></div>`;
             }
 
             document.getElementById('result').innerHTML = resultText;
         }
 
-        // Tooltip functionality
-        const infoButton = document.querySelector('.info-button');
-        const tooltipText = document.querySelector('.tooltiptext');
-
-        infoButton.addEventListener('click', function(event) {
-            event.stopPropagation();
-            if (tooltipText.style.display === 'block') {
-                tooltipText.style.display = 'none';
-            } else {
-                tooltipText.style.display = 'block';
-            }
-        });
-
-        document.addEventListener('click', function(event) {
-            if (!tooltipText.contains(event.target) && event.target !== infoButton) {
-                tooltipText.style.display = 'none';
-            }
-        });
+        /* Close tooltip function for mobile */
+        function closeTooltip() {
+            document.getElementById('tooltipContent').style.display = 'none';
+        }
     </script>
 </body>
 </html>
